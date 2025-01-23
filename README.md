@@ -58,10 +58,9 @@ project-name/
 ---
 
 ## Contributors
-- **Your Name** - BCIT CST Student with a passion for creating user-friendly applications. Fun fact: Loves solving Rubik's Cubes in under a minute.
+
 Mitchell schaeffer - BCIT student excited to learn how to create working applications, I love installing and accidentally corrupting arch linux in my free time. 
-- **Teammate Name** - BCIT CST Student, Frontend enthusiast with a knack for creative design. Fun fact: Has a collection of over 50 houseplants.
-Camron Lockyer - BCIT student, Likes to play basketball and video games in free time.
+
 
 ---
 
