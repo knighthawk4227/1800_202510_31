@@ -60,6 +60,7 @@ project-name/
 ## Contributors
 
 Camron Lockyer - Bcit student loves to play sports and video games.
+
 Mitchell schaeffer - BCIT student excited to learn how to create working applications, I love installing and accidentally corrupting arch linux in my free time. 
 
 
