@@ -9,6 +9,36 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <style>
+        
+        body {
+            font-family:'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+        }
+        nav {
+            background-color: black;
+            overflow: hidden;
+        }
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+        nav ul li {
+            float: left;
+        }
+        nav ul li a {
+            display: block;
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
+            text-align: center;
+        }
+        nav ul li a:hover {
+            background-color: gray
+        }
+    </style>
     <!-- Bootstrap Library CSS CDN go here -->
     <!-- Boostrap Library JS CDN  go here -->
 
@@ -20,6 +50,15 @@
 </head>
 
 <body>
+
+    <nav>
+        <ul>
+            <li><a href="#home"></a>Home</li>
+            <li><a href="#profile">Profile</a></li>
+            <li><a href="#budget">Budget</a></li>
+            <li><a href="#groceries">Groceries</a></li>
+        </ul>
+    </nav>
 
     <!------------------------------>
     <!-- Your HTML Layout go here -->
