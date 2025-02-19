@@ -1,7 +1,10 @@
 body {
+  display: flex;
+  flex-direction: column;
   font-family:'Times New Roman', Times, serif;
   margin: 0;
   padding: 0;
+  
   }
   /* Nav bar */
   nav {
@@ -21,7 +24,6 @@ body {
     color: white;
     padding: 14px 20px;
     text-decoration: none;
-    text-align: center;
   }
   nav ul li a:hover {
     background-color: gray
@@ -59,6 +61,7 @@ header.masthead .masthead-content .masthead-subheading {
   font-size: 2rem;
   text-align: center;
 }
+/* circle colour and sizes*/
 header.masthead .bg-circle {
   z-index: 0;
   position: absolute;
@@ -104,26 +107,42 @@ header.masthead .bg-circle-4 {
 
       footer {
         display: flex;
-        flex-direction: column;
         background-color: black;
         color: white;
-        text-align: center;
-        padding: 0;
-        position: sticky;
+        justify-content: space-between;
+        align-items: center;
         width: 100%;
-      }
-      footer ul {
-          list-style-type: none;
-          padding: 0;
-      }
-      footer ul li a {
-          color: white;
-          text-decoration: none;
+        margin: 0pt;
+        padding: 10pt;
+       
+        
       }
       footer li {
-          list-style-type: none;
+        list-style: none;
+      }
+     footer ul{
+      position: relative;
+      margin: 0;
+      display: flex;
+      
+      gap: 50pt;
+      margin-left: 500pt;
+     }
+     footer .head {
+      margin-left: 550pt;
+     }
+      footer a {
+        color: white;
+        
+      }
+      footer .copyright {
+        position: absolute;
+        bottom: 2pt;
+        left: 9pt;
       }
       footer ul li a:hover {
           text-decoration: underline;
       }
+
+      
       
