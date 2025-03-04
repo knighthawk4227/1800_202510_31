@@ -1,7 +1,10 @@
+html{
+  height: 100%;
+  width: 100%;
+}
 body {
   display: flex;
   flex-direction: column;
-  font-family:'Times New Roman', Times, serif;
   margin: 0;
   padding: 0;
   
@@ -38,14 +41,22 @@ body {
     line-height: 1.2;
     color: white;
 }
+
+main {
+  display: block;
+}
+header .mb-1 {
+  display: inline;
+  justify-content: center  ;
+  background-color: black
+}
 header.masthead {
+  min-height: 900px;
   position: relative;
   overflow: hidden;
-  padding-top: 225pt;
-  padding-bottom: 7rem;
-  background: linear-gradient(0deg, #ff6a00 0%, #2E8B57 100%);
+  background: linear-gradient(0deg, #00274D 0%, #87CEFA 100%);
   /* background-repeat: no-repeat; */
-  background-position: center center;
+  /* background-position: center center; */
   /* background-attachment: scroll; */
   background-size: cover;
 }
@@ -66,13 +77,13 @@ header.masthead .bg-circle {
   z-index: 0;
   position: absolute;
   border-radius: 100%;
-  background: linear-gradient(0deg, #4b9966 0%, #00FF7F 100%);
+  background: linear-gradient(0deg, #D0EFFF 0%, #FFFFFF 100%);
 }
 header.masthead .bg-circle-1 {
   height: 90rem;
   width: 90rem;
   bottom: -55rem;
-  left: -55rem;
+  left: -45rem;
 }
 header.masthead .bg-circle-2 {
   height: 50rem;
@@ -106,29 +117,20 @@ header.masthead .bg-circle-4 {
       /* footer */
 
       footer {
-        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2em;
         background-color: black;
         color: white;
         justify-content: space-between;
         align-items: center;
         margin: 0pt;
         padding: 10pt;
-       
-        
       }
-      footer li {
-        list-style: none;
-      }
-     footer ul{
-      position: relative;
-      margin: 0;
-      display: flex;
-      
-      gap: 50pt;
-      margin-left: 500pt;
-     }
      footer .head {
-      margin-left: 550pt;
+      display: flex;
      }
       footer a {
         color: white;
@@ -139,9 +141,5 @@ header.masthead .bg-circle-4 {
         bottom: 2pt;
         left: 9pt;
       }
-      footer ul li a:hover {
-          text-decoration: underline;
-      }
-
       
       
