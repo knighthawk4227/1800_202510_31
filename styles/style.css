@@ -39,6 +39,7 @@ body {
     font-weight: 700;
     line-height: 1.2;
     color: white;
+    display: inline-block;
 }
 
 main {
@@ -48,20 +49,29 @@ header.masthead {
   min-height: 900px;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(0deg, #00274D 0%, #87CEFA 100%);
+  background: linear-gradient(0deg, #38a581 0%, #88C788 100%);
   /* background-repeat: no-repeat; */
   /* background-position: center center; */
   /* background-attachment: scroll; */
   background-size: cover;
 }
-header .heading {
-  font-size: 4rem;
-  display: block;
-  margin-left: 50%;
-  transform: translate(-50%);
+.heading1  {
+  display: inline-block;
+  font-size: 3rem;
   margin-top: 10pt;
   background-color: black;
-  max-width: 50%;
+  margin-left: 25%;
+
+  }
+
+
+.heading2 {
+  font-size: 1.5rem;
+  display: inline-block;
+  margin-left: 50%;
+  margin-top: 10pt;
+  transform: translate(-50%);
+  background-color: black;
 }
 
 
