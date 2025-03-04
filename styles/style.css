@@ -3,32 +3,31 @@ html{
   width: 100%;
 }
 body {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 9vw 6fr;
   margin: 0;
   padding: 0;
   
   }
   /* Nav bar */
-  nav {
+  .nav-bar {
+    display: grid;
+    grid-template-rows: 10vh repeat(4, 5vh) 1fr;
     background-color: black;
-    overflow: hidden;
-  }
-  nav ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
+    font-size: large;
   }
-  nav ul li {
-    float: left;
-  }
-  nav ul li a {
+ 
+  .nav-bar a {
     display: block;
+    width: 100%;
     color: white;
     padding: 14px 20px;
     text-decoration: none;
   }
-  nav ul li a:hover {
+  .nav-bar a:hover {
     background-color: gray
   }
   /*Top section/ head*/
@@ -43,12 +42,7 @@ body {
 }
 
 main {
-  display: block;
-}
-header .mb-1 {
-  display: inline;
-  justify-content: center  ;
-  background-color: black
+  display: flex;
 }
 header.masthead {
   min-height: 900px;
@@ -60,57 +54,15 @@ header.masthead {
   /* background-attachment: scroll; */
   background-size: cover;
 }
-header.masthead .masthead-content {
-  z-index: 1;
-  position: relative;
-}
-header.masthead .masthead-content .masthead-heading {
+header .heading {
   font-size: 4rem;
-  text-align: center;  
+  display: block;
+  margin-left: 50%;
+  transform: translate(-50%);
+  margin-top: 10pt;
+  background-color: black;
+  max-width: 50%;
 }
-header.masthead .masthead-content .masthead-subheading {
-  font-size: 2rem;
-  text-align: center;
-}
-/* circle colour and sizes*/
-header.masthead .bg-circle {
-  z-index: 0;
-  position: absolute;
-  border-radius: 100%;
-  background: linear-gradient(0deg, #D0EFFF 0%, #FFFFFF 100%);
-}
-header.masthead .bg-circle-1 {
-  height: 90rem;
-  width: 90rem;
-  bottom: -55rem;
-  left: -45rem;
-}
-header.masthead .bg-circle-2 {
-  height: 50rem;
-  width: 50rem;
-  top: -25rem;
-  right: -25rem;
-}
-header.masthead .bg-circle-3 {
-  height: 20rem;
-  width: 20rem;
-  bottom: -10rem;
-  right: 5%;
-}
-header.masthead .bg-circle-4 {
-  height: 30rem;
-  width: 30rem;
-  top: -5rem;
-  right: 35%;
-}
-
-
-
-
-
-
-
-
 
 
 
