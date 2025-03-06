@@ -4,7 +4,7 @@ html{
 }
 body {
   display: grid;
-  grid-template-columns: 9vw 1fr 1fr 1fr 1fr;
+  grid-template-columns: 9vw 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   margin: 0;
   padding: 0;
@@ -102,6 +102,7 @@ header.masthead {
       /* footer */
 
       footer {
+        z-index: 0;
         position: fixed;
         bottom: 0;
         left: 0;
