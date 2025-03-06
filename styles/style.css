@@ -4,22 +4,27 @@ html{
 }
 body {
   display: grid;
-  grid-template-columns: 9vw 6fr;
+  grid-template-columns: 9vw 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
   margin: 0;
   padding: 0;
   
   }
   /* Nav bar */
   .nav-bar {
-    display: grid;
-    grid-template-rows: 10vh repeat(4, 5vh) 1fr;
+    position: fixed; /* Fixes sidebar position */
+    top: 0;
+    left: 0;
+    width: 9vw; /* Matches the width in grid */
+    height: 100vh; /* Full viewport height */
     background-color: black;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
+    display: flex;
+    flex-direction: column;
     font-size: large;
+    padding: 0;
+    z-index: 1000; /* Ensures it stays on top of other elements */
   }
- 
+
   .nav-bar a {
     display: block;
     width: 100%;
@@ -30,48 +35,66 @@ body {
   .nav-bar a:hover {
     background-color: gray
   }
+
+  .buttons {
+    margin-top: 2em;
+  }
   /*Top section/ head*/
 
   h1, h2{
-    margin-top: 0;
-    margin-bottom: 2rem;
+    margin: 0;
     font-family: "Catamaran", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     font-weight: 700;
     line-height: 1.2;
     color: white;
-    display: inline-block;
 }
 
-main {
-  display: flex;
-}
 header.masthead {
-  min-height: 900px;
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(0deg, #38a581 0%, #88C788 100%);
+  width: 100%;
+  height: 100vh;
+  background:#88C788;
   /* background-repeat: no-repeat; */
   /* background-position: center center; */
   /* background-attachment: scroll; */
   background-size: cover;
+  
 }
-.heading1  {
-  display: inline-block;
-  font-size: 3rem;
-  margin-top: 10pt;
-  background-color: black;
-  margin-left: 25%;
+.main {
+  grid-column: 2 / span 6; /*This makes it span even if I have added more columns*/
+}
 
+.heading1  {
+  display: block;
+  font-size: 3rem;
+  /* margin-top: 10pt; */
+  background-color: black;
+  margin: 0;
+
+  }
+
+  .heading1 h1 {
+    margin-left: 25%;
   }
 
 
 .heading2 {
   font-size: 1.5rem;
   display: inline-block;
-  margin-left: 50%;
-  margin-top: 10pt;
+  margin-left: 45%;
   transform: translate(-50%);
-  background-color: black;
+  position: relative;
+}
+
+
+/*Css affecting cards on main*/
+.card {
+  height: 24rem;
+}
+.card-container {
+  align-items: center;
+  display: grid;
+  grid-column: 2 / span 6;
+  gap: 2rem;
 }
 
 
