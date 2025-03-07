@@ -22,7 +22,7 @@ body {
     flex-direction: column;
     font-size: large;
     padding: 0;
-    z-index: 1000; /* Ensures it stays on top of other elements */
+    z-index: 1; /* Ensures it stays on top of other elements */
   }
 
   .nav-bar a {
@@ -102,7 +102,7 @@ header.masthead {
       /* footer */
 
       footer {
-        z-index: 0;
+        z-index: 2;
         position: fixed;
         bottom: 0;
         left: 0;
