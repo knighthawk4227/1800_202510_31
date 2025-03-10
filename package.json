@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/knighthawk4227/1800_202510_31/issues"
   },
-  "homepage": "https://github.com/knighthawk4227/1800_202510_31#readme"
+  "homepage": "https://github.com/knighthawk4227/1800_202510_31#readme",
+  "dependencies": {
+    "firebase": "^11.4.0"
+  }
 }

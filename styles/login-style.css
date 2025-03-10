@@ -66,6 +66,9 @@ form h3{
     line-height: 42px;
     text-align: center;
 }
+h4 {
+    text-align: center;
+}
 
 label{
     display: block;

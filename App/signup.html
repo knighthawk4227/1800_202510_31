@@ -16,34 +16,45 @@
     <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.8.1/firebase-ui-auth.css" />
 
     <!--Stylesheet-->
+    <style>
+      form{
+        height: 40rem;
+        width: 30rem;
+        background-color: rgba(21, 21, 61, 0.3);
+        position: absolute;
+        transform: translate(-50%,-50%);
+        top: 50%;
+        left: 50%;
+        border-radius: 10px;
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255,255,255,0.1);
+        box-shadow: 0 0 40px rgba(8,7,16,0.6);
+        padding: 2rem 2rem;
+      }
+    </style>
 </head>
 <body>
   <div class="background">
       <div class="shape"></div>
       <div class="shape"></div>
   </div>
-  <form id="login-form">
+  <form>
     <h3>Survival Wallet</h3>
+    <h4>Sign up here </h4>
+
+    <label for="username">Name</label>
+    <input type="text" placeholder="Name" id="Fname">
 
     <label for="username">Email</label>
     <input type="text" placeholder="Email" id="username">
 
     <label for="password">Password</label>
     <input type="password" placeholder="Password" id="password">
-    <div id="error-message" style="color: red; "></div>  <!--placeholder for the java-->
+    
    <button type="submit" class="login">Log In</button>
-   <h5>Don't have an account? <a href="./signup.html"><span style="color: blue;">Signup here</span></h5></a>
+   <h5>Have an account? <a href="./login.html"><span style="color: blue;">Sign in here here</span></h5></a>
   </form>
   <script src="../scripts/firebaseAPI.js"></script>
-  <script type="module">
-    import {login} from '../scripts/firebaseAPI.js'
-    document.getElementById('login-form').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const email = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
-      login(email, password);
-    });
-  </script>
   
 </body>
 </html>
