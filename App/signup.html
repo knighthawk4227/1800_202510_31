@@ -38,23 +38,45 @@
       <div class="shape"></div>
       <div class="shape"></div>
   </div>
-  <form>
+  <form id="signup-form">
     <h3>Survival Wallet</h3>
     <h4>Sign up here </h4>
 
     <label for="username">Name</label>
-    <input type="text" placeholder="Name" id="Fname">
+    <input type="text" placeholder="Name" id="fname">
 
     <label for="username">Email</label>
     <input type="text" placeholder="Email" id="username">
 
     <label for="password">Password</label>
     <input type="password" placeholder="Password" id="password">
+    <input type="password" placeholder="Confirm Password" id="password1">
+    <div id="error-message" style="color: red; "></div>  <!--placeholder for the java-->
     
-   <button type="submit" class="login">Log In</button>
+   <button type="submit" class="login">Sign up</button>
    <h5>Have an account? <a href="./login.html"><span style="color: blue;">Sign in here here</span></h5></a>
   </form>
   <script src="../scripts/firebaseAPI.js"></script>
+  <script type="module">
+    import {signup} from '../scripts/firebaseAPI.js'
+    document.getElementById('signup-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const first = document.getElementById('fname').value;
+      const email = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const password1 = document.getElementById('password1').value;
+      if (password != password1) {
+        const errorMessageDiv = document.getElementById('error-message');
+        errorMessageDiv.textContent = "Passwords do not match";
+        return;
+      }
+      try {
+        await signup(first, email, password);
+      } catch(error) {
+          errorMessageDiv.textContent = error.message;
+      }
+      });
+  </script>
   
 </body>
 </html>
