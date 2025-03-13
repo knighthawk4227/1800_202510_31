@@ -15,22 +15,10 @@ export function signup(first, email, password) {
     createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             // signed up 
-            
             const user = userCredential.user;
             console.log("User has sigened up", user);
             window.location.href = "index.html";
 
-            // store user info and first name
-            // return updateProfile(user, {
-            //   displayName: first
-            // }).then(() => {
-            //   return setDoc(doc(db, "users", user.uid), {
-            //     firstName: first,
-            //     email: email
-            //   });
-            // }).then(() => {
-            //   window.location.href = "index.html";
-            // });
         })
         .catch((error) => {
             const errorCode = error.code;

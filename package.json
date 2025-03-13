@@ -2,24 +2,30 @@
   "name": "1800_202510_31",
   "version": "1.0.0",
   "description": "Summarize your project's purpose, problem solved, key features, user benefits, development context, and main technologies used.",
-  "main": "index.js",
+  "main": "express.mjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "nodemon ./src/express.mjs",
+    "start": "node ./src/express.mjs "
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/knighthawk4227/1800_202510_31.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Mitchell Schaeffer, Camron Lockyer",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/knighthawk4227/1800_202510_31/issues"
   },
   "homepage": "https://github.com/knighthawk4227/1800_202510_31#readme",
   "dependencies": {
+    "express": "^4.21.2",
     "firebase": "^11.4.0",
     "python": "^0.0.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
   }
 }
