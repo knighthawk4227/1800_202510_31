@@ -1,6 +1,7 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-auth.js";
-import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-firestore.js";
+import { initializeApp } from 'firebase/app';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, onAuthStateChanged } from 'firebase/auth';
+import firebase from 'firebase/compat/app';
+import { getFirestore, doc, setDoc } from 'firebase/firestore';
 
 const firebaseConfig = {
 
@@ -22,10 +23,17 @@ const firebaseConfig = {
 
 
 
-const firebaseApp = initializeApp(firebaseConfig);
-const db = getFirestore(firebaseApp);
-// const analytics = getAnalytics(firebaseApp);
-const auth = getAuth(firebaseApp);
+if (!firebase.apps.length) {
+
+    firebase.initializeApp(firebaseConfig);
+} else {
+
+    firebase.app(); // if already initialized, use that one
+}
+
+const db = firebase.firestore();
+
+const auth = getAuth();
 
 // detect auth state
 onAuthStateChanged(auth, user => {
@@ -79,7 +87,7 @@ export function signup(first, email, password) {
 
 
 //Login info 
-export function login(email, password) {
+function login(email, password) {
     signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             // if login works 
@@ -105,6 +113,7 @@ export function login(email, password) {
                 errorMessagePlaceholder.textContent = "There was an error signing in, please try again";
             }
         });
+
 }
 
 

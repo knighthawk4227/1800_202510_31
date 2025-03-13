@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/knighthawk4227/1800_202510_31#readme",
   "dependencies": {
-    "firebase": "^11.4.0"
+    "firebase": "^11.4.0",
+    "python": "^0.0.4"
   }
 }

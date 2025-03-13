@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Budget app</title>
+  <link rel="stylesheet" href="../styles/budget-style.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="input-container">
+      <div class="header">
+        <h1>Survival Wallet </h1>
+      </div>
+      <div id="balance">Balance: $0.00</div>
+      <form id="transaction-form">
+
+        <input type="text" placeholder="Transaction description" id="description" required>
+        <input type="number" id="amount" placeholder="Amount" step="0.01" required>
+
+        <select id="type" required>
+
+          <option value="income">Income</option>
+          <option value="expense">Expense</option>
+          <option value="savings">Savings</option>
+
+        </select>
+        
+        <button type="submit">Add transaction </button>
+
+      </form> 
+    </div>
+    <div class="transactions-container">
+      <h2>Transactions</h2>
+      <div class="transaction-list">
+        <div class="transaction income">
+          <span>Freelance work</span>
+          <span class="transaction-amount-container">$500 <button class="delete-btn">Delete</button></span>
+        </div>
+        <div class="transaction expense">
+          <span>Freelance work</span>
+          <span class="transaction-amount-container">$500 <button class="delete-btn">Delete</button></span>
+        </div>
+        <div class="transaction expense">
+          <span>Freelance work</span>
+          <span class="transaction-amount-container">$500 <button class="delete-btn">Delete</button></span>
+        </div>
+        <div class="transaction income">
+          <span>Freelance work</span>
+          <span class="transaction-amount-container">$500 <button class="delete-btn">Delete</button></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../scripts/budget.js"></script>
+</body>
+</html>

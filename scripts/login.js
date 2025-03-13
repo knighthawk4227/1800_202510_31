@@ -1,5 +1,5 @@
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, onAuthStateChanged } from 'firebase/auth';
-
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, onAuthStateChanged } from 'firebase/auth';
+import { auth, db } from './index.js';
 
 onAuthStateChanged(auth, user => {
     if (user != null) {
@@ -52,13 +52,12 @@ export function signup(first, email, password) {
 
 
 //Login info 
-function login(email, password) {
+function login() {
     document.getElementById('login-form').addEventListener('submit', (e) => {
         e.preventDefault();
         const email = document.getElementById('username').value;
         const password = document.getElementById('password').value;
-    });
-    signInWithEmailAndPassword(auth, email, password)
+        signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             // if login works 
             const user = userCredential.user;
@@ -70,7 +69,7 @@ function login(email, password) {
             const errorCode = error.code;
             const errorMessage = error.message;
             console.error("there was a problem sign in: ", errorCode, errorMessage);
-
+            
             // if no account 
             const errorMessagePlaceholder = document.getElementById('error-message');
             if (errorCode === 'auth/user-not-found') {
@@ -83,5 +82,9 @@ function login(email, password) {
                 errorMessagePlaceholder.textContent = "There was an error signing in, please try again";
             }
         });
+        });
 }
 
+
+// call the function in the js 
+login();
