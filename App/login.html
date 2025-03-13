@@ -31,18 +31,14 @@
     <label for="password">Password</label>
     <input type="password" placeholder="Password" id="password">
     <div id="error-message" style="color: red; "></div>  <!--placeholder for the java-->
-   <button type="submit" class="login">Log In</button>
+   <button type="submit" onclick="login()" class="login">Log In</button>
    <h5>Don't have an account? <a href="./signup.html"><span style="color: blue;">Signup here</span></h5></a>
   </form>
-  <script src="../scripts/index.js"></script>
-  <script type="module">
-    import {login} from '../scripts/index.js'
-    document.getElementById('login-form').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const email = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
-      login(email, password);
-    });
+  <script src="../scripts/login.js"></script>
+  <script>
+      // const email = document.getElementById('username').value;
+      // const password = document.getElementById('password').value;
+      login();
   </script>
   
 </body>

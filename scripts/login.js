@@ -1,33 +1,6 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-auth.js";
-import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-firestore.js";
-
-const firebaseConfig = {
-
-  apiKey: "AIzaSyBX3f9ow4wXrkAX3AVi3LF13wQmqCPR6zM",
-
-  authDomain: "survival-wallet-1800.firebaseapp.com",
-
-  projectId: "survival-wallet-1800",
-
-  storageBucket: "survival-wallet-1800.appspot.com",
-
-  messagingSenderId: "277966678306",
-
-  appId: "1:277966678306:web:b97d40ab05719d29c71d7b",
-
-  measurementId: "G-Z3RXXY5QJ8"
-
-};
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, onAuthStateChanged } from 'firebase/auth';
 
 
-
-const firebaseApp = initializeApp(firebaseConfig);
-const db = getFirestore(firebaseApp);
-// const analytics = getAnalytics(firebaseApp);
-const auth = getAuth(firebaseApp);
-
-// detect auth state
 onAuthStateChanged(auth, user => {
     if (user != null) {
         console.log("logged in");
@@ -79,7 +52,12 @@ export function signup(first, email, password) {
 
 
 //Login info 
-export function login(email, password) {
+function login(email, password) {
+    document.getElementById('login-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+    });
     signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             // if login works 
@@ -106,5 +84,4 @@ export function login(email, password) {
             }
         });
 }
-
 
