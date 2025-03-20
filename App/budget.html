@@ -4,53 +4,83 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Budget app</title>
-  <link rel="stylesheet" href="../styles/budget-style.css">
+  <link rel="stylesheet" href="../styles/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-  <div class="app-container">
-    <div class="input-container">
-      <div class="header">
-        <h1>Survival Wallet </h1>
+  <div class="container">
+    <!-- Nav Bar -->
+    <nav class="nav-bar">
+      <div class="logo">
+        <i class="fas fa-wallet"></i>
+        <span>Survival Wallet</span>
       </div>
-      <div id="balance">Balance: $0.00</div>
-      <form id="transaction-form">
-
-        <input type="text" placeholder="Transaction description" id="description" required>
-        <input type="number" id="amount" placeholder="Amount" step="0.01" required>
-
-        <select id="type" required>
-
-          <option value="income">Income</option>
-          <option value="expense">Expense</option>
-          <option value="savings">Savings</option>
-
-        </select>
-        
-        <button type="submit">Add transaction </button>
-
-      </form> 
-    </div>
-    <div class="transactions-container">
-      <h2>Transactions</h2>
-      <div class="transaction-list">
-        <div class="transaction income">
-          <span>Freelance work</span>
-          <span class="transaction-amount-container">$500 <button class="delete-btn">Delete</button></span>
-        </div>
-        <div class="transaction expense">
-          <span>Freelance work</span>
-          <span class="transaction-amount-container">$500 <button class="delete-btn">Delete</button></span>
-        </div>
-        <div class="transaction expense">
-          <span>Freelance work</span>
-          <span class="transaction-amount-container">$500 <button class="delete-btn">Delete</button></span>
-        </div>
-        <div class="transaction income">
-          <span>Freelance work</span>
-          <span class="transaction-amount-container">$500 <button class="delete-btn">Delete</button></span>
+      <div class="buttons">
+        <a href="index.html" aria-current="page">
+          <i class="fas fa-home"></i>
+          <span>Home</span>
+        </a>
+        <a href="profile.html">
+          <i class="fas fa-user"></i>
+          <span>Profile</span>
+        </a>
+        <a href="budget.html">
+          <i class="fas fa-chart-pie"></i>
+          <span>Budget</span>
+        </a>
+        <a href="groceries.html">
+          <i class="fas fa-shopping-cart"></i>
+          <span>Groceries</span>
+        </a>
+        <a href="savings.html">
+          <i class="fas fa-piggy-bank"></i>
+          <span>Savings</span>
+        </a>
+        <a href="reports.html">
+          <i class="fas fa-chart-line"></i>
+          <span>Reports</span>
+        </a>
+        <div class="auth-buttons">
+          <!-- Login button (shown when not logged in) -->
+          <a href="login.html" class="login-btn" id="loginButton">
+            <i class="fas fa-sign-in-alt"></i>
+            <span>Logout  </span>
+          </a>
+          <!-- Logout button (shown when logged in) -->
+          <a href="#" class="logout-btn" id="logoutButton" style="display: none;">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+          </a>
         </div>
       </div>
-    </div>
+    </nav>
+
+    <main class="main-content">
+      <section class="budget-section">
+        <h2>Survival Wallet</h2>
+        <div class="budget-overview">
+          <div class="budget-card">
+            <h3>This Months Budget</h3>
+            <div class="budget-stats">
+              <div class="stat-item">
+                <span class="label">Spent</span>
+                <span class="value">Value here </span>
+              </div>
+              <div class="stat-item">
+                <span class="label">Remaining</span>
+                <span class="value-remaining">Money stuff goes here</span>
+              </div>
+            </div>
+            <div class="progress-bar">
+              <div class="progress" style="width: 41%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="budget-card">
+
+        </div>
+      </section>
+    </main>
   </div>
 
   <script src="../scripts/budget.js"></script>
