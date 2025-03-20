@@ -73,7 +73,7 @@ html, body {
 }
 
 .nav-bar a:hover {
-  background-color: #34495e;
+  background-color: var(--secondary-color);
 }
 
 /* Header */
