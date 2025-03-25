@@ -1,5 +1,6 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js';
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.5.2/firebase-auth.js';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from 'https://www.gstatic.com/firebasejs/10.5.2/firebase-auth.js';
+import { getFirestore, doc, setDoc } from 'https://www.gstatic.com/firebasejs/10.5.2/firebase-firestore.js';
 
 // Firebase configuration
 const firebaseConfig = {
@@ -15,11 +16,22 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
+
+// Function to generate account code
+function generateAccountCode() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let result = '';
+  for (let i = 0; i < 12; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+    if ((i + 1) % 4 === 0 && i !== 11) result += '-';
+  }
+  return result;
+}
 
 // Check if user is already logged in
 onAuthStateChanged(auth, (user) => {
     if (user) {
-        // User is signed in, but don't redirect automatically
         console.log('User is already signed in');
     }
 });
@@ -37,28 +49,20 @@ document.addEventListener('DOMContentLoaded', () => {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
-            // Disable button and show loading state
             loginButton.disabled = true;
             loginButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
             errorMessage.textContent = '';
 
             try {
-                // Attempt to sign in
-                
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
                 console.log('Login successful:', user);
-                
-                // Only redirect after successful login
                 window.location.href = "index.html";
             } catch (error) {
                 console.error('Login error:', error);
-                
-                // Reset button state
                 loginButton.disabled = false;
                 loginButton.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
 
-                // Show appropriate error message
                 switch (error.code) {
                     case 'auth/user-not-found':
                         if (confirm('No account found with this email. Would you like to create one?')) {
@@ -83,24 +87,41 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Sign up function
-export function signup(first, email, password) {
-    createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            // signed up 
-            const user = userCredential.user;
-            console.log("User has signed up", user);
-            window.location.href = "index.html";
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.error("there was a problem signing up: ", errorCode, errorMessage);
-            const errorMessageDiv = document.getElementById('error-message');
-            // Error if email already in use
-            if (errorCode === 'auth/email-already-in-use') {
-                errorMessageDiv.textContent = "Email already in use";
-            } else {
-                errorMessageDiv.textContent = errorMessage;
-            }
+export async function signup(first, email, password) {
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        
+        // Update user profile
+        await updateProfile(user, {
+            displayName: first
         });
+
+        // Generate account code
+        const accountCode = generateAccountCode();
+        
+        // Create user document with account code
+        await setDoc(doc(db, "users", user.uid), {
+            firstName: first,
+            email: email,
+            createdAt: new Date().toISOString(),
+            accountCode: accountCode,
+            monthlyBudget: 0
+        });
+
+        console.log("User has signed up with code:", accountCode);
+        window.location.href = "index.html";
+    } catch (error) {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.error("Signup error:", errorCode, errorMessage);
+        const errorMessageDiv = document.getElementById('error-message');
+        
+        if (errorCode === 'auth/email-already-in-use') {
+            errorMessageDiv.textContent = "Email already in use";
+        } else {
+            errorMessageDiv.textContent = errorMessage;
+        }
+        throw error;
+    }
 }
