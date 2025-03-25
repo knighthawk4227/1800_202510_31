@@ -2,7 +2,17 @@ import { createUserWithEmailAndPassword, updateProfile } from 'https://www.gstat
 import { doc, setDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
 import { auth, db } from './firebase-config.js';
 
-// Handle signup form submission
+// Function to generate account code (same as in profile.js)
+function generateAccountCode() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let result = '';
+  for (let i = 0; i < 12; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+    if ((i + 1) % 4 === 0 && i !== 11) result += '-';
+  }
+  return result;
+}
+
 document.getElementById('signup-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     
@@ -12,7 +22,6 @@ document.getElementById('signup-form').addEventListener('submit', async (e) => {
     const passwordre = document.getElementById('password-retype').value;
     const errorMessageDiv = document.getElementById('error-message');
     
-    // Validate password strength
     if (password.length < 6) {
         errorMessageDiv.textContent = "Password must be at least 6 characters long.";
         return;
@@ -23,30 +32,29 @@ document.getElementById('signup-form').addEventListener('submit', async (e) => {
     }
     
     try {
-        // Create user account
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
         
-        // Update user profile with full name
         await updateProfile(user, {
             displayName: fullName
         });
         
-        // Create user document in Firestore
+        // Generate account code for new user
+        const accountCode = generateAccountCode();
+        
         await setDoc(doc(db, "users", user.uid), {
             fullName: fullName,
             email: email,
             createdAt: new Date().toISOString(),
             monthlyBudget: 0,
-            totalSavings: 0
+            accountCode: accountCode  // Store the generated code
         });
         
-        console.log("User created successfully:", user);
+        console.log("User created successfully with code:", accountCode);
         window.location.href = "index.html";
     } catch (error) {
         console.error("Signup error:", error);
         
-        // Handle specific error cases
         switch (error.code) {
             case 'auth/email-already-in-use':
                 errorMessageDiv.textContent = "This email is already registered. Please use a different email.";
@@ -61,4 +69,4 @@ document.getElementById('signup-form').addEventListener('submit', async (e) => {
                 errorMessageDiv.textContent = "An error occurred. Please try again.";
         }
     }
-}); 
+});

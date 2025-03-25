@@ -64,11 +64,28 @@
     <main class="main-content">
       <!-- Profile Section -->
       <div class="profile-section">
-        <h1>Name Lastname</h1>
-        <h2>something.something@examplesomething.com</h2>
-        <div class="actions">
-          <button id="manageGroupBtn">Manage Group</button>
-          <button id="editProfileBtn">Edit Profile</button>
+        <div class="profile-info">
+          <div class="name-code-container">
+            <h1 id="userName">Name Lastname</h1>
+            <div class="account-code">
+              <span class="code-label">Account Code:</span>
+              <span id="userCode" class="code-value">XXXX-XXXX-XXXX</span>
+              <button id="copyCodeBtn" class="copy-btn">
+                <i class="fas fa-copy"></i>
+              </button>
+            </div>
+          </div>
+          <h2 id="userEmail">something.something@examplesomething.com</h2>
+          <div class="profile-stats">
+            <div class="stat-item">
+              <span class="stat-value" id="monthlyBudget">$0</span>
+              <span class="stat-label">Monthly Budget</span>
+            </div>
+          </div>
+          <div class="actions">
+            <button id="manageGroupBtn">Manage Group</button>
+            <button id="editProfileBtn">Edit Profile</button>
+          </div>
         </div>
 
         <!-- Group Info Section -->
@@ -91,7 +108,6 @@
       </div>
     </footer>
   </div>
-
 
   <script src="../scripts/profile.js"></script>
 </body>

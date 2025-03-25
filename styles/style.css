@@ -240,88 +240,147 @@ footer .copyright {
 }
 
     /*Profile page */
-    .profile-section {
-      background: var(--white);
-      border-radius: 8px;
-      box-shadow: var(--shadow);
-      padding: 40px;
-      margin: 20px;
-      height: calc(100vh - 160px); /* Full height minus header and footer */
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-    }
+.profile-section {
+  background: var(--white);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  padding: 40px;
+  margin: 20px;
+  width: 100%;
+  max-width: 800px;
+}
 
-    .profile-section h1 {
-      font-size: 3rem;
-      color: var(--primary-color);
-      margin-bottom: 15px;
-      font-family: 'Catamaran', sans-serif;
-      font-weight: 700;
-    }
+.profile-info {
+  width: 100%;
+}
 
-    .profile-section h2 {
-      font-size: 1.5rem;
-      color: var(--light-text);
-      margin-bottom: 30px;
-      font-weight: 400;
-    }
+.profile-stats {
+  display: flex;
+  gap: 30px;
+  margin: 20px 0;
+}
 
-    .profile-section .actions {
-      display: flex;
-      gap: 15px;
-      margin-bottom: 30px;
-    }
+.stat-item {
+  background-color: var(--background-color);
+  padding: 15px 25px;
+  border-radius: 8px;
+  text-align: center;
+  min-width: 120px;
+}
 
-    .profile-section button {
-      background-color: var(--secondary-color);
-      color: var(--white);
-      border: none;
-      padding: 12px 24px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: var(--transition);
-      font-size: 1rem;
-      font-weight: 500;
-    }
+.stat-value {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent-color);
+}
 
-    .profile-section button:hover {
-      background-color: var(--accent-color);
-    }
+.stat-label {
+  font-size: 0.9rem;
+  color: var(--light-text);
+}
 
-    .group-info {
-      display: none;
-      margin-top: 30px;
-      padding: 20px;
-      background-color: var(--background-color);
-      border-radius: 8px;
-      width: 80%;
-      max-width: 600px;
-    }
+.actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+}
 
-    .group-info.active {
-      display: block;
-    }
+.profile-section button {
+  background-color: var(--secondary-color);
+  color: var(--white);
+  border: none;
+  padding: 12px 24px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: var(--transition);
+  font-size: 1rem;
+  font-weight: 500;
+}
 
-    .group-info p {
-      font-size: 1.1rem;
-      color: var(--text-color);
-      margin-bottom: 15px;
-    }
+.profile-section button:hover {
+  background-color: var(--accent-color);
+}
 
-    .group-info ul {
-      list-style-type: none;
-      padding: 0;
-    }
+.group-info {
+  display: none;
+  margin-top: 30px;
+  padding: 20px;
+  background-color: var(--background-color);
+  border-radius: 8px;
+  width: 100%;
+}
 
-    .group-info ul li {
-      font-size: 1rem;
-      color: var(--light-text);
-      margin-bottom: 10px;
-      padding: 10px;
-      background-color: var(--white);
-      border-radius: 5px;
-      box-shadow: var(--shadow);
-    }
+.group-info.active {
+  display: block;
+}
+
+.group-info p {
+  font-size: 1.1rem;
+  color: var(--text-color);
+  margin-bottom: 15px;
+}
+
+.group-info ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.group-info ul li {
+  font-size: 1rem;
+  color: var(--light-text);
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: var(--white);
+  border-radius: 5px;
+  box-shadow: var(--shadow);
+}
+
+/* Add these to your existing CSS */
+
+.name-code-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.account-code {
+  display: flex;
+  align-items: center;
+  background-color: var(--background-color);
+  padding: 8px 15px;
+  border-radius: 20px;
+  gap: 10px;
+}
+
+.code-label {
+  font-size: 0.9rem;
+  color: var(--light-text);
+}
+
+.code-value {
+  font-family: monospace;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.copy-btn {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  transition: var(--transition);
+}
+
+.copy-btn:hover {
+  background-color: rgba(0,0,0,0.1);
+}
+
+.copy-btn i {
+  font-size: 0.9rem;
+}
