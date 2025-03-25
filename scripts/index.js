@@ -95,7 +95,7 @@ function updateUIForAuthState(user) {
         }
     } else {
         window.location.href = 'login.html';
-        console.log("User is signed out, updating UI...");
+        console.log("User is signed out, updating UI");
         if (loginButton) {
             loginButton.style.display = 'none';
             console.log("Login button is hidden");
