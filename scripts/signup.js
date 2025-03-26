@@ -1,16 +1,31 @@
-import { createUserWithEmailAndPassword, updateProfile } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
-import { doc, setDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
-import { auth, db } from './firebase-config.js';
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js';
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js';
+import { getFirestore, doc, setDoc } from 'https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js';
 
-// Function to generate account code (same as in profile.js)
+const firebaseConfig = {
+    apiKey: "AIzaSyBX3f9ow4wXrkAX3AVi3LF13wQmqCPR6zM",
+    authDomain: "survival-wallet-1800.firebaseapp.com",
+    projectId: "survival-wallet-1800",
+    storageBucket: "survival-wallet-1800.appspot.com",
+    messagingSenderId: "277966678306",
+    appId: "1:277966678306:web:b97d40ab05719d29c71d7b",
+    measurementId: "G-Z3RXXY5QJ8"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// Function to generate account code
 function generateAccountCode() {
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  let result = '';
-  for (let i = 0; i < 12; i++) {
-    result += chars.charAt(Math.floor(Math.random() * chars.length));
-    if ((i + 1) % 4 === 0 && i !== 11) result += '-';
-  }
-  return result;
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let result = '';
+    for (let i = 0; i < 12; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+        if ((i + 1) % 4 === 0 && i !== 11) result += '-';
+    }
+    return result;
 }
 
 document.getElementById('signup-form').addEventListener('submit', async (e) => {
@@ -22,51 +37,54 @@ document.getElementById('signup-form').addEventListener('submit', async (e) => {
     const passwordre = document.getElementById('password-retype').value;
     const errorMessageDiv = document.getElementById('error-message');
     
+    // Validate inputs
     if (password.length < 6) {
         errorMessageDiv.textContent = "Password must be at least 6 characters long.";
         return;
     }
     if (password !== passwordre) {
-        errorMessageDiv.textContent = "Passwords do not match please try again";
+        errorMessageDiv.textContent = "Passwords do not match.";
         return;
     }
     
     try {
+        // Create user
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
         
-        await updateProfile(user, {
-            displayName: fullName
-        });
-        
-        // Generate account code for new user
+        // Generate account code
         const accountCode = generateAccountCode();
         
+        // Update profile
+        await updateProfile(user, { displayName: fullName });
+        
+        // Create user document
         await setDoc(doc(db, "users", user.uid), {
             fullName: fullName,
             email: email,
-            createdAt: new Date().toISOString(),
+            accountCode: accountCode,
             monthlyBudget: 0,
-            accountCode: accountCode  // Store the generated code
+            createdAt: new Date().toISOString()
         });
         
-        console.log("User created successfully with code:", accountCode);
-        window.location.href = "index.html";
+        window.location.href = "../App/profile.html";
+        
     } catch (error) {
         console.error("Signup error:", error);
+        let errorMessage = "An error occurred. Please try again.";
         
         switch (error.code) {
             case 'auth/email-already-in-use':
-                errorMessageDiv.textContent = "This email is already registered. Please use a different email.";
+                errorMessage = "Email already in use.";
                 break;
             case 'auth/invalid-email':
-                errorMessageDiv.textContent = "Invalid email address. Please check your input.";
+                errorMessage = "Invalid email address.";
                 break;
             case 'auth/weak-password':
-                errorMessageDiv.textContent = "Password is too weak. Please use a stronger password.";
+                errorMessage = "Password is too weak.";
                 break;
-            default:
-                errorMessageDiv.textContent = "An error occurred. Please try again.";
         }
+        
+        document.getElementById('error-message').textContent = errorMessage;
     }
 });
