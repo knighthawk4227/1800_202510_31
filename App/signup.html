@@ -1,82 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Design by foolishdeveloper.com -->
-    <title>Survival Wallet</title>
- 
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../styles/login-style.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/ui/4.8.1/firebase-ui-auth.js"></script>
-    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.8.1/firebase-ui-auth.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up - Survival Wallet</title>
 
-    <!--Stylesheet-->
-    <style>
-      form{
-        height: 40rem;
-        width: 30rem;
-        background-color: rgba(21, 21, 61, 0.3);
-        position: absolute;
-        transform: translate(-50%,-50%);
-        top: 50%;
-        left: 50%;
-        border-radius: 10px;
-        backdrop-filter: blur(10px);
-        border: 2px solid rgba(255,255,255,0.1);
-        box-shadow: 0 0 40px rgba(8,7,16,0.6);
-        padding: 2rem 2rem;
-      }
-    </style>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/login-style.css">
+
+  <!-- Firebase v8 Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+  <style>
+    form {
+      height: 40rem;
+      width: 30rem;
+      background-color: rgba(21, 21, 61, 0.3);
+      position: absolute;
+      transform: translate(-50%, -50%);
+      top: 50%;
+      left: 50%;
+      border-radius: 10px;
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 40px rgba(8, 7,16, 0.6);
+      padding: 2rem 2rem;
+    }
+  </style>
 </head>
 <body>
   <div class="background">
-      <div class="shape"></div>
-      <div class="shape"></div>
+    <div class="shape"></div>
+    <div class="shape"></div>
   </div>
+
   <form id="signup-form">
     <h3>Survival Wallet</h3>
-    <h4>Sign up here </h4>
+    <h4>Sign up here</h4>
 
-    <label for="username">Name</label>
-    <input type="text" placeholder="Name" id="fname">
+    <label for="fname">Name</label>
+    <input type="text" placeholder="Name" id="fname" required>
 
     <label for="username">Email</label>
-    <input type="text" placeholder="Email" id="username">
+    <input type="text" placeholder="Email" id="username" required>
 
     <label for="password">Password</label>
-    <input type="password" placeholder="Password" id="password">
-    <input type="password" placeholder="Confirm Password" id="password1">
-    <div id="error-message" style="color: red; "></div>  <!--placeholder for the java-->
-    
-   <button type="submit" class="login">Sign up</button>
-   <h5>Have an account? <a href="./login.html"><span style="color: blue;">Sign in here here</span></h5></a>
+    <input type="password" placeholder="Password" id="password" required>
+
+    <input type="password" placeholder="Confirm Password" id="password1" required>
+
+    <div id="error-message" style="color: red;"></div>
+
+    <button type="submit" class="login">Sign up</button>
+    <h5>Have an account? <a href="./login.html"><span style="color: blue;">Sign in here</span></a></h5>
   </form>
-  <script src="../scripts/index.js"></script>
-  <script type="module">
-    import {signup} from '../scripts/index.js'
-    document.getElementById('signup-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const first = document.getElementById('fname').value;
-      const email = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
-      const password1 = document.getElementById('password1').value;
-      if (password != password1) {
-        const errorMessageDiv = document.getElementById('error-message');
-        errorMessageDiv.textContent = "Passwords do not match";
-        return;
-      }
-      try {
-        await signup(first, email, password);
-      } catch(error) {
-          errorMessageDiv.textContent = error.message;
-      }
-      });
-  </script>
-  
+
+  <!-- Link to index.js for handling signup logic -->
+  <script src="../scripts/signup.js" defer></script>
 </body>
 </html>

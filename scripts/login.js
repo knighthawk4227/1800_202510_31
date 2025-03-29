@@ -1,7 +1,4 @@
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js';
-import { getAuth, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js';
-import { getFirestore, doc, getDoc } from 'https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js';
-
+// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBX3f9ow4wXrkAX3AVi3LF13wQmqCPR6zM",
   authDomain: "survival-wallet-1800.firebaseapp.com",
@@ -13,21 +10,23 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+firebase.initializeApp(firebaseConfig);
+
+// Get references to Firebase services
+const auth = firebase.auth();
+const db = firebase.firestore();
 
 // Handle login form submission
 document.getElementById('login-form').addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  const email = document.getElementById('username').value;
+  const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
   const errorMessageDiv = document.getElementById('error-message');
 
   try {
     // Log the user in
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const userCredential = await auth.signInWithEmailAndPassword(email, password);
     const user = userCredential.user;
 
     // Redirect to the profile page after successful login
@@ -36,6 +35,7 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
     console.error("Login error:", error);
     let errorMessage = "An error occurred. Please try again.";
 
+    // Handle common Firebase auth errors
     switch (error.code) {
       case 'auth/user-not-found':
         errorMessage = "No account found with that email address.";
@@ -48,6 +48,7 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
         break;
     }
 
-    document.getElementById('error-message').textContent = errorMessage;
+    // Show error message in the div
+    errorMessageDiv.textContent = errorMessage;
   }
 });
