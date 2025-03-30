@@ -6,6 +6,9 @@
   <title>Budget app</title>
   <link rel="stylesheet" href="../styles/budget-style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 </head>
 <body>
   <div class="container">
@@ -58,40 +61,39 @@
     <main class="main-content">
       <section class="budget-section">
         <h2>Survival Wallet</h2>
-        <div class="budget-overview" style="display: none;">
+        <div id="budget-overview" class="budget-overview" style="display: none;">
           <div class="budget-card">
-            <h3>This Month's Budget</h3>
+            <h3 id="budget-name">This Month's Budget</h3>
             <div class="budget-stats">
               <div class="stat-item">
                 <i class="fas fa-money-bill-wave"></i>
                 <span class="label">Spent</span>
-                <span class="value">$0.00</span>
+                <span class="value" id="spent-amount">$0.00</span>
               </div>
               <div class="stat-item">
                 <i class="fas fa-wallet"></i>
                 <span class="label">Remaining</span>
-                <span class="value-remaining">$0.00</span>
+                <span class="value-remaining" id="remaining-amount">$0.00</span>
               </div>
             </div>
             <div class="butt">
-              <button name="expense" type="submit" >Edit Budget</button>
-            </div>
-            <div id="action-buttons" style="display: none;">
-              <button id="create-budget-btn" style="display: none;">Create Budget</button>
-              <button id="join-group-btn" style="display: none;">Join Budget</button>
-              <div id="join-error" style="color: red; margin-top: 10px;"></div>
+              <button id="edit-budget-btn" type="button" >Edit Budget</button>
             </div>
             <div class="progress-bar">
-              <div class="progress" style="width: 0%"></div>
+              <div id="progress-bar" class="progress" style="width: 0%"></div>
             </div>
           </div>
         </div>
-       
+        <div id="action-buttons" style="display: none;">
+          <button id="create-budget-btn">Create Budget</button>
+          <button id="join-group-btn">Join Budget</button>
+          <div id="join-error" style="color: red; margin-top: 10px;"></div>
+        </div>
       </section>
     </main>
   </div>
 
-  <script src="../scripts/budget.js"></script>
   <script src="../scripts/index.js"></script>
+  <script src="../scripts/budget.js"></script>
 </body>
 </html>

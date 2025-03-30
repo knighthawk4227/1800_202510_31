@@ -1,8 +1,7 @@
 console.log("hello");
 
 let currentUser = null;
-const auth = firebase.auth(); // Initialize Firebase Auth
-const db = firebase.firestore(); // Initialize Firestore
+
 const FieldValue = firebase.firestore.FieldValue;
 let userBudgetId = null; 
 
@@ -26,6 +25,7 @@ async function checkUserBudget() {
     .get();
 
   if (!budgetSnap.empty) {
+    //the user is apart of a budget
     const budgetData = budgetSnap.docs[0].data();
     userBudgetId = budgetSnap.docs[0].id;
 
@@ -33,6 +33,8 @@ async function checkUserBudget() {
     document.getElementById("budget-overview").style.display = "block";
     document.getElementById("action-buttons").style.display = "none"; 
   } else {
+    document.getElementById("budget-overview").style.display = "none";
+    document.getElementById("action-buttons").style.display = "block"; // Show action buttons
     document.getElementById("create-budget-btn").style.display = "block";
     document.getElementById("join-group-btn").style.display = "block";
   }
@@ -40,6 +42,8 @@ async function checkUserBudget() {
 
 // load budget data 
 function loadBudgetData(budgetData) {
+
+  document.getElementById("budget-name").textContent = `${budgetData.name || "no Name Budget"}`
   document.getElementById("spent-amount").textContent = `$${budgetData.spent || 0}`; 
   document.getElementById("remaining-amount").textContent = `$${budgetData.budgetAmount - (budgetData.spent || 0)}`;
 
@@ -103,6 +107,10 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("join-error").textContent = "Budget not found";
     }
   });
+});
+
+document.getElementById("edit-budget-btn").addEventListener("click", () => {
+  console.log("does not work yet ha :( ");
 });
 
 function editBudget() {
