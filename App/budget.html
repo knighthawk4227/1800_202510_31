@@ -58,7 +58,7 @@
     <main class="main-content">
       <section class="budget-section">
         <h2>Survival Wallet</h2>
-        <div class="budget-overview">
+        <div class="budget-overview" style="display: none;">
           <div class="budget-card">
             <h3>This Month's Budget</h3>
             <div class="budget-stats">
@@ -76,6 +76,11 @@
             <div class="butt">
               <button name="expense" type="submit" >Edit Budget</button>
             </div>
+            <div id="action-buttons" style="display: none;">
+              <button id="create-budget-btn" style="display: none;">Create Budget</button>
+              <button id="join-group-btn" style="display: none;">Join Budget</button>
+              <div id="join-error" style="color: red; margin-top: 10px;"></div>
+            </div>
             <div class="progress-bar">
               <div class="progress" style="width: 0%"></div>
             </div>
@@ -87,5 +92,6 @@
   </div>
 
   <script src="../scripts/budget.js"></script>
+  <script src="../scripts/index.js"></script>
 </body>
 </html>

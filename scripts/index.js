@@ -1,7 +1,3 @@
-// Firebase 8.10.0 imports
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js';
-import { getAuth, signOut } from 'https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js';
-import { getFirestore, doc, setDoc } from 'https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js';
 
 const firebaseConfig = {
     apiKey: "AIzaSyBX3f9ow4wXrkAX3AVi3LF13wQmqCPR6zM",
@@ -14,9 +10,9 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
 
 let isInitialized = true;
 
@@ -74,7 +70,7 @@ function updateUIForAuthState(user) {
                 e.preventDefault();
                 try {
                     showLoading();
-                    await signOut(auth);
+                    await auth.signOut();
                     window.location.href = 'login.html';
                 } catch (error) {
                     console.error('Error signing out:', error);
@@ -95,13 +91,13 @@ auth.onAuthStateChanged((user) => {
     if (user) {
         updateUIForAuthState(user);
     } else {
-        window.location.replace("../App/login.html");
+        window.location.href = "../App/login.html";
     }
     hideLoading();
 });
 
 // Sign up function
-export async function signup(first, email, password) {
+window.signup = async function (first, email, password) {
     if (!isInitialized) {
         showError("Application is not initialized. Please refresh the page.");
         return;
@@ -109,17 +105,17 @@ export async function signup(first, email, password) {
     
     try {
         showLoading();
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
         const user = userCredential.user;
         
         // Update user profile with first name
-        await updateProfile(user, { displayName: first });
+        await user.updateProfile({ displayName: first });
         
         // Generate account code
         const accountCode = generateAccountCode();
         
         // Create user document in Firestore
-        await setDoc(doc(db, "users", user.uid), {
+        await db.collection("users").doc(user.uid).set({
             firstName: first,
             email: email,
             createdAt: new Date().toISOString(),
@@ -137,7 +133,7 @@ export async function signup(first, email, password) {
 }
 
 // Login function
-export async function login(email, password) {
+window.login = async function (email, password) {
     if (!isInitialized) {
         showError("Application is not initialized. Please refresh the page.");
         return;
@@ -145,8 +141,9 @@ export async function login(email, password) {
     
     try {
         showLoading();
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const userCredential = await auth.signInWithEmailAndPassword(email, password);
         const user = userCredential.user;
+        window.location.href = "../App/index.html";
     } catch (error) {
         console.error("Login error:", error);
         if (error.code === 'auth/user-not-found') {
