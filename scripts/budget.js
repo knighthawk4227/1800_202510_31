@@ -1,9 +1,15 @@
-console.log("hello");
+console.log("I am the budget script here to haunt you ");
 
 let currentUser = null;
 
 const FieldValue = firebase.firestore.FieldValue;
 let userBudgetId = null; 
+const editModal = document.getElementById("edit-budget-modal");
+const closeModal = document.querySelector(".close");
+const editForm = document.getElementById("edit-budget-form");
+const editBudgetName = document.getElementById("edit-budget-name");
+const editBudgetAmount = document.getElementById("edit-budget-amount");
+const resetSpentCheckbox = document.getElementById("reset-spent");
 
 // Check if user is authenticated
 auth.onAuthStateChanged((user) => {
@@ -120,10 +126,74 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-document.getElementById("edit-budget-btn").addEventListener("click", () => {
-  console.log("does not work yet ha :( ");
+document.getElementById("edit-budget-btn").addEventListener("click", async () => {
+  if (!userBudgetId) {
+    alert("there is no budget to modify");
+    return;
+  }
+
+
+  //current info 
+  const budgetDoc = await db.collection("groupBudget").doc(userBudgetId).get();
+  const budgetData = budgetDoc.data();
+
+  //give form preset values
+  editBudgetName.value = budgetData.name || "";
+  editBudgetAmount.value = budgetData.budgetAmount || 0;
+
+  editModal.style.display = "block";  
+});
+
+closeModal.addEventListener("click", () => {
+  editModal.style.display = "none";
+});
+
+editForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const newBudgetName = editBudgetName.value.trim();
+  const newBudgetAmount = parseFloat(editBudgetAmount.value);
+  const resetSpent = resetSpentCheckbox.checked;
+
+  if (!newBudgetName || isNaN(newBudgetAmount) || newBudgetAmount <= 0) {
+    alert("please input valid data");
+    return;
+  }
+
+  const updatedData = {
+    name: newBudgetName,
+    budgetAmount: newBudgetAmount,
+  };
+
+  if (resetSpent) {
+    updatedData.spent = 0;
+  }
+
+  
+  
+  try {
+    await db.collection("groupBudget").doc(userBudgetId).update(updatedData);
+
+    editModal.style.display = "none";
+    await checkUserBudget();
+
+  } catch (error) {
+    console.log("There has been an error");
+  }
+});
+
+
+
+window.addEventListener("click", (e) => {
+  if (e.target === editModal) {
+    editModal.style.display = "none";
+  }
 });
 });
+
+
+
+
 
 
 function editBudget() {
