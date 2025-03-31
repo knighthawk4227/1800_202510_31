@@ -1,39 +1,41 @@
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js';
-import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js';
-import { getFirestore, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js';
+console.log("I am the budget script here to haunt you ");
 
-const firebaseConfig = {
-    apiKey: "AIzaSyBX3f9ow4wXrkAX3AVi3LF13wQmqCPR6zM",
-    authDomain: "survival-wallet-1800.firebaseapp.com",
-    projectId: "survival-wallet-1800",
-    storageBucket: "survival-wallet-1800.appspot.com",
-    messagingSenderId: "277966678306",
-    appId: "1:277966678306:web:b97d40ab05719d29c71d7b",
-    measurementId: "G-Z3RXXY5QJ8"
-};
+let currentUser = null;
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+const FieldValue = firebase.firestore.FieldValue;
+let userBudgetId = null; 
+const editModal = document.getElementById("edit-budget-modal");
+const closeModal = document.querySelector(".close");
+const editForm = document.getElementById("edit-budget-form");
+const editBudgetName = document.getElementById("edit-budget-name");
+const editBudgetAmount = document.getElementById("edit-budget-amount");
+const resetSpentCheckbox = document.getElementById("reset-spent");
 
-onAuthStateChanged(auth, async (user) => {
+
+firebase.auth().onAuthStateChanged(async (user) => {
     if (user) {
         // Get user data
-        const userRef = doc(db, "users", user.uid);
-        const docSnap = await getDoc(userRef);
+        const userRef = firebase.firestore().collection("users").doc(user.uid);
+        const docSnap = await userRef.get();
         
-        if (docSnap.exists()) {
+        if (docSnap.exists) {
             const userData = docSnap.data();
-            document.getElementById('userName').textContent = user.displayName;
-            document.getElementById('userEmail').textContent = user.email;
-            document.getElementById('accountCode').textContent = userData.accountCode;
+
+            if (document.getElementById('userName')) {
+                document.getElementById('userName').textContent = user.displayName;
+            }
+            if (document.getElementById('userEmail')) {
+                document.getElementById('userEmail').textContent = user.email;
+            }
+            if (document.getElementById('accountCode')) {
+                document.getElementById('accountCode').textContent = userData.accountCode;
+            }
         }
         
         // Logout functionality
         document.getElementById('logoutButton').addEventListener('click', async () => {
             try {
-                await signOut(auth);
+                await firebase.auth().signOut();
                 window.location.href = "../App/login.html";
             } catch (error) {
                 console.error('Error logging out:', error);
@@ -44,3 +46,9 @@ onAuthStateChanged(auth, async (user) => {
         window.location.href = "../App/login.html";
     }
 });
+
+
+console.log("user info stuff...");
+
+
+
