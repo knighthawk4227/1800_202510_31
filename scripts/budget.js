@@ -59,12 +59,23 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    let budgetAmount = prompt("Please enter a total budget amount");
+    budgetAmount = parseFloat(budgetAmount);
+
+    const budgetCode = generateAccountCode();
+
+    if (isNaN(budgetAmount) || budgetAmount <= 0) {
+      alert("Please enter a valid amount");
+      return;
+    }
+
     const budgetRef = await db.collection("groupBudget").add({
       name: budgetName,
       owner: currentUser.uid,
       members: [currentUser.uid],
-      budgetAmount: 500,
+      budgetAmount: budgetAmount,
       spent: 0,
+      code: budgetCode,
       createdAt: FieldValue.serverTimestamp()
     });
 
@@ -74,45 +85,47 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.getElementById("join-group-btn").addEventListener("click", async () => {
-    const budgetId = prompt("Please put in the budget code");
-
-    if (!budgetId) {
+    const budgetCode = prompt("Please put in the budget code");  
+    
+    if (!budgetCode) {
       alert("ID is needed to join a budget");
       return;
     }
 
-    const budgetRef = db.collection("groupBudget").doc(budgetId);
-    const docSnap = await budgetRef.get();
+    const budgetCheck = await db.collection("groupBudget")
+    .where("code","==", budgetCode)
+    .get();
 
-    if (docSnap.exists) {
-      const budgetData = docSnap.data();
+    if (!budgetCheck.empty) {
+      const budgetDoc = budgetCheck.docs[0];
+      const budgetData = budgetDoc.data();
       const members = budgetData.members || [];
-
+    
       if (members.includes(currentUser.uid)) {
         document.getElementById("join-error").textContent = "You are already in this group";
         return;
       }
-
+    
       if (members.length >= MAX_MEMBERS) {
         document.getElementById("join-error").textContent = "This budget has reached the max members limit";
         return;
       }
-
+    
       members.push(currentUser.uid);
-      await budgetRef.update({ members });
-
+      await budgetDoc.ref.update({ members });
       alert("You have been added to the budget");
       await checkUserBudget();
     } else {
       document.getElementById("join-error").textContent = "Budget not found";
     }
-  });
 });
 
 document.getElementById("edit-budget-btn").addEventListener("click", () => {
   console.log("does not work yet ha :( ");
 });
+});
+
 
 function editBudget() {
-  // I have to do this function still.
+  console.log("hello");
 }
