@@ -90,41 +90,56 @@ document.addEventListener("DOMContentLoaded", () => {
     await checkUserBudget();
   });
 
-  document.getElementById("join-group-btn").addEventListener("click", async () => {
-    const budgetCode = prompt("Please put in the budget code");  
+  const joinModal = document.getElementById("join-budget-modal");
+  const joinClose = document.querySelector(".join-close");
+  const joinForm = document.getElementById("join-budget-form");
+  const joinBudgetCodeInput = document.getElementById("join-budget-code");
+  const joinError = document.getElementById("join-error");
+
+  //opens join form
+  document.getElementById("join-group-btn").addEventListener("click", () => {
+    joinModal.style.display = "block"; 
     
-    if (!budgetCode) {
-      alert("ID is needed to join a budget");
+});
+//close button logic
+if (joinClose) {
+  joinClose.addEventListener("click", () =>  {
+    joinModal.style.display = "none";
+  });
+}
+
+joinForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const budgetCode = joinBudgetCodeInput.value.trim();
+  const budgetCheck = await db.collection("groupBudget")
+  .where("code", "==", budgetCode)
+  .get();
+
+  if(!budgetCheck.empty) {
+    const budgetDoc = budgetCheck.docs[0];
+    const budgetData = budgetDoc.data();
+    const members = budgetData.members || [];
+
+    if (members.includes(currentUser.uid)) {
+      joinError.textContent = "You already in somehow man";
       return;
     }
-
-    const budgetCheck = await db.collection("groupBudget")
-    .where("code","==", budgetCode)
-    .get();
-
-    if (!budgetCheck.empty) {
-      const budgetDoc = budgetCheck.docs[0];
-      const budgetData = budgetDoc.data();
-      const members = budgetData.members || [];
-    
-      if (members.includes(currentUser.uid)) {
-        document.getElementById("join-error").textContent = "You are already in this group";
-        return;
-      }
-    
-      if (members.length >= MAX_MEMBERS) {
-        document.getElementById("join-error").textContent = "This budget has reached the max members limit";
-        return;
-      }
-    
-      members.push(currentUser.uid);
-      await budgetDoc.ref.update({ members });
-      alert("You have been added to the budget");
-      await checkUserBudget();
-    } else {
-      document.getElementById("join-error").textContent = "Budget not found";
+  
+    if (members.length >= MAX_MEMBERS) {
+      document.getElementById("join-error").textContent = "This budget has reached the max members limit";
+      return;
     }
+  
+    members.push(currentUser.uid);
+    await budgetDoc.ref.update({ members });
+    await checkUserBudget();
+  } else {
+    document.getElementById("join-error").textContent = "Budget not found";
+  }
 });
+
+
 
 document.getElementById("edit-budget-btn").addEventListener("click", async () => {
   if (!userBudgetId) {
@@ -184,7 +199,11 @@ editForm.addEventListener("submit", async (e) => {
 
 
 
+
 window.addEventListener("click", (e) => {
+  if (e.target === joinModal) {
+    joinModal.style.display = "none";
+  }
   if (e.target === editModal) {
     editModal.style.display = "none";
   }
