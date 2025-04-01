@@ -27,10 +27,17 @@ firebase.auth().onAuthStateChanged(async (user) => {
             if (document.getElementById('userEmail')) {
                 document.getElementById('userEmail').textContent = user.email;
             }
-            if (document.getElementById('accountCode')) {
-                document.getElementById('accountCode').textContent = userData.accountCode;
+
+            const budgetSnap = await firebase.firestore().collection("groupBudget")
+            .where("members", "array-contains", user.uid)
+            .get();
+            if (!budgetSnap.empty) {
+                const budgetData = budgetSnap.docs[0].data();
+                document.getElementById('accountCode').textContent = budgetData.code;
+            } else {
+                document.getElementById('accountCode').textContent = "xxxx-xxxx-xxxx";
             }
-        }
+        } // Closing brace for if (docSnap.exists)
         
         // Logout functionality
         document.getElementById('logoutButton').addEventListener('click', async () => {
@@ -41,8 +48,8 @@ firebase.auth().onAuthStateChanged(async (user) => {
                 console.error('Error logging out:', error);
             }
         });
-        
-    } else {
+    } // Closing brace for if (user)
+    else {
         window.location.href = "../App/login.html";
     }
 });
