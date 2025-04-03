@@ -4,16 +4,13 @@
   <title>Profile</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="Main profile page" content="My 1800 App">
-
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Catamaran:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="../styles/style.css">
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-
-  <link rel="stylesheet" href="../styles/style.css">
+  <script src="../scripts/profile.js"></script>
 </head>
 <body>
   <div class="container">
@@ -24,11 +21,11 @@
         <span>Survival Wallet</span>
       </div>
       <div class="buttons">
-        <a href="index.html" aria-current="page">
+        <a href="index.html">
           <i class="fas fa-home"></i>
           <span>Home</span>
         </a>
-        <a href="profile.html">
+        <a href="profile.html" aria-current="page">
           <i class="fas fa-user"></i>
           <span>Profile</span>
         </a>
@@ -49,13 +46,7 @@
           <span>Reports</span>
         </a>
         <div class="auth-buttons">
-          <!-- Login button (shown when not logged in) -->
-          <a href="login.html" class="login-btn" id="loginButton">
-            <i class="fas fa-sign-in-alt"></i>
-            <span>Logout  </span>
-          </a>
-          <!-- Logout button (shown when logged in) -->
-          <a href="#" class="logout-btn" id="logoutButton" style="display: none;">
+          <a href="#" class="logout-btn" id="logoutButton">
             <i class="fas fa-sign-out-alt"></i>
             <span>Logout</span>
           </a>
@@ -65,54 +56,88 @@
 
     <!-- Main Content -->
     <main class="main-content">
-      <!-- Profile Section -->
-      <div class="profile-section">
+      <section class="profile-section">
         <div class="profile-info">
+          <h2>User Profile</h2>
           <div class="name-code-container">
-            <h1 id="userName">Name Lastname</h1>
+            <div>
+              <p id="userName"></p>
+              <p id="userEmail"></p>
+            </div>
             <div class="account-code">
               <span class="code-label">Budget Code:</span>
-              <span id="accountCode" class="code-value">XXXX-XXXX-XXXX</span>
-              <button id="copyCodeBtn" class="copy-btn">
+              <span class="code-value" id="accountCode">Loading...</span>
+              <button class="copy-btn" id="copyCodeBtn" title="Copy to clipboard">
                 <i class="fas fa-copy"></i>
               </button>
             </div>
           </div>
-          <h2 id="userEmail">something.something@examplesomething.com</h2>
+
           <div class="profile-stats">
             <div class="stat-item">
-              <span class="stat-value" id="monthlyBudget">$0</span>
-              <span class="stat-label">Monthly Budget</span>
+              <div class="stat-value" id="budget-name">Loading...</div>
+              <div class="stat-label">Budget Name</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" id="spent-amount">$0.00</div>
+              <div class="stat-label">Total Spent</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" id="remaining-amount">$0.00</div>
+              <div class="stat-label">Remaining</div>
             </div>
           </div>
+
+          <!-- Shopping List Section -->
+          <div class="shopping-list-container" id="shopping-list-container">
+            <div class="shopping-list-header">
+              <h3>Your Shopping List</h3>
+              <span class="shopping-list-total" id="shopping-list-total">$0.00</span>
+            </div>
+            <div class="shopping-list-items" id="shopping-list-items">
+              <div class="loading-spinner">
+                <i class="fas fa-spinner fa-spin"></i>
+                <span>Loading your shopping list...</span>
+              </div>
+            </div>
+          </div>
+
           <div class="actions">
-            <button id="manageGroupBtn">Manage Group</button>
-            <button id="editProfileBtn">Edit Profile</button>
+            <button id="edit-budget-btn">
+              <i class="fas fa-edit"></i> Edit Budget
+            </button>
           </div>
         </div>
-
-        <!-- Group Info Section -->
-        <div class="group-info" id="groupInfo">
-          <p><strong>Group Name:</strong> GROUP31</p>
-          <p><strong>Group Members:</strong></p>
-          <ul>
-            <li>Camron</li>
-            <li>Mitchell</li>
-            <li>Kaung RIP</li>
-          </ul>
-        </div>
-      </div>
+      </section>
     </main>
 
     <!-- Footer -->
     <footer>
       <div class="foot">
-        <p class="copyright">&copy; 2025 Survival Wallet, The App</p>
+        <p class="copyright">&copy; 2025 Survival Wallet</p>
       </div>
     </footer>
   </div>
 
-  <script src="../scripts/index.js"></script>
-  <script src="../scripts/profile.js"></script>
+  <!-- Edit Budget Modal -->
+  <div id="edit-budget-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Edit Budget</h2>
+      <form id="edit-budget-form">
+        <label for="edit-budget-name">Budget Name:</label>
+        <input type="text" id="edit-budget-name" placeholder="Enter new budget name" required>
+        <label for="edit-budget-amount">Budget Amount:</label>
+        <input type="number" id="edit-budget-amount" placeholder="Enter new budget amount" min="0" step="0.01" required>
+        <div>
+          <input type="checkbox" id="reset-spent">
+          <label for="reset-spent">Reset spent amount to $0</label>
+        </div>
+        <button type="submit" id="save-budget-btn">
+          <i class="fas fa-save"></i> Save Changes
+        </button>
+      </form>
+    </div>
+  </div>
 </body>
 </html>
