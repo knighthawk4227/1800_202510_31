@@ -94,9 +94,9 @@ const firebaseConfig = {
     const groceryBudget = userBudget.remaining * percentage;
     
     let recommendationTier;
-    if (groceryBudget < 15) {
+    if (groceryBudget < 500) {
       recommendationTier = "low";
-    } else if (groceryBudget < 40) {
+    } else if (groceryBudget < 1000) {
       recommendationTier = "medium";
     } else {
       recommendationTier = "high";
