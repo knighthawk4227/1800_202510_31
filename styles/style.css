@@ -384,3 +384,120 @@ footer .copyright {
 .copy-btn i {
   font-size: 0.9rem;
 }
+/* BUDGET PAGE STYLES */
+.budget-section {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.budget-display {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.budget-info {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.budget-info p {
+  margin: 0;
+  padding: 12px 15px;
+  background-color: #e9ecef;
+  border-radius: 5px;
+  font-size: 0.95rem;
+}
+
+.budget-info p span {
+  display: block;
+}
+
+.budget-info p span:first-child {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.budget-info p span:last-child {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+#remaining-budget {
+  color: #2ecc71;
+}
+
+.budget-range {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.budget-range label {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.budget-range select {
+  padding: 8px 12px;
+  border-radius: 5px;
+  border: 1px solid #ced4da;
+  background-color: white;
+  font-size: 0.9rem;
+}
+
+.refresh-btn {
+  padding: 10px 15px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  align-self: flex-start;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+}
+
+.refresh-btn:hover {
+  background-color: #45a049;
+}
+
+.refresh-btn i {
+  margin-right: 5px;
+}
+
+/* Budget Recommendations */
+.recommendations-container {
+  margin-top: 25px;
+}
+
+.recommendations-header {
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.recommendations-header h3 {
+  color: #2c3e50;
+  margin-bottom: 5px;
+  font-size: 1.2rem;
+}
+
+.recommendations-header p {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 15px;
+}
+

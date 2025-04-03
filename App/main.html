@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Products</title>
+  <title>Grocery Recommendations</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="Main products page" content="My 1800 App">
-
-  <!-- Google Fonts will change -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Catamaran:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
   <link rel="stylesheet" href="../styles/style.css">
-
   
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 </head>
 <body>
   <div class="container">
@@ -64,47 +64,34 @@
 
     <!-- Main Content -->
     <main class="main-content">
-      <!-- Product 1 -->
-      <div class="product-card">
-        <img src="" alt="Placeholder image">
-        <div class="product-info">
-          <h3>Product 1</h3>
-          <p>Description of the products</p>
-          <p class="price">$29.99</p>
-          <button>Add to Cart</button>
+      <section class="budget-section">
+        <h2>Grocery Recommendations Based on Your Budget</h2>
+        <div class="budget-display">
+          <div class="budget-info">
+            <p>Your total budget: <span id="total-budget">$0.00</span></p>
+            <p>Amount spent: <span id="spent-amount">$0.00</span></p>
+            <p>Remaining budget: <span id="remaining-budget">$0.00</span></p>
+          </div>
+          <div class="budget-range">
+            <label for="budget-percentage">Budget allocation for groceries:</label>
+            <select id="budget-percentage">
+              <option value="0.1">10%</option>
+              <option value="0.2">20%</option>
+              <option value="0.3" selected>30%</option>
+              <option value="0.4">40%</option>
+              <option value="0.5">50%</option>
+            </select>
+          </div>
+          <button id="load-recommendations" class="refresh-btn">
+            <i class="fas fa-sync-alt"></i> Update Recommendations
+          </button>
         </div>
-      </div>
+      </section>
 
-      <!-- Product 2 -->
-      <div class="product-card">
-        <img src="" alt="placeholder image">
-        <div class="product-info">
-          <h3>Product 2</h3>
-          <p>I'm not sure if this will work well for a lot of products but its a good start</p>
-          <p class="price">$49.99</p>
-          <button>Add to Cart</button>
-        </div>
-      </div>
-
-      <!-- Product 3 -->
-      <div class="product-card">
-        <img src="" alt="Placeholder image">
-        <div class="product-info">
-          <h3>Product 3</h3>
-          <p>something something blah blah blah</p>
-          <p class="price">$79.99</p>
-          <button>Add to Cart</button>
-        </div>
-      </div>
-
-      <!-- Product 4 -->
-      <div class="product-card">
-        <img src="" alt="Placeholder imahe">
-        <div class="product-info">
-          <h3>Product 4</h3>
-          <p>this is a very good deal :0</p>
-          <p class="price">$9999.99</p>
-          <button>Add to Cart</button>
+      <div id="recommendations-container" class="recommendations-container">
+        <!-- Recommendations will be loaded here -->
+        <div class="loading-message">
+          <p>Loading recommendations based on your budget...</p>
         </div>
       </div>
     </main>
@@ -112,9 +99,11 @@
     <!-- Footer -->
     <footer>
       <div class="foot">
-        <p class="copyright">&copy; 2025 Product Showcase, The App</p>
+        <p class="copyright">&copy; 2025 Survival Wallet</p>
       </div>
     </footer>
   </div>
+
+  <script src="../scripts/main-products.js"></script>
 </body>
 </html>
