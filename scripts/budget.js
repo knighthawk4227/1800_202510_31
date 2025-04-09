@@ -1,55 +1,30 @@
-console.log("I am the budget script here to haunt you ");
+// budget.js - Updated with shopping list functionality
+
+const firebaseConfig = {
+    apiKey: "AIzaSyBX3f9ow4wXrkAX3AVi3LF13wQmqCPR6zM",
+    authDomain: "survival-wallet-1800.firebaseapp.com",
+    projectId: "survival-wallet-1800",
+    storageBucket: "survival-wallet-1800.appspot.com",
+    messagingSenderId: "277966678306",
+    appId: "1:277966678306:web:b97d40ab05719d29c71d7b",
+    measurementId: "G-Z3RXXY5QJ8"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+const FieldValue = firebase.firestore.FieldValue;
 
 let currentUser = null;
-const FieldValue = firebase.firestore.FieldValue;
-let userBudgetId = null; 
-const editModal = document.getElementById("edit-budget-modal");
-const closeModal = document.querySelector(".close");
-const editForm = document.getElementById("edit-budget-form");
-const editBudgetName = document.getElementById("edit-budget-name");
-const editBudgetAmount = document.getElementById("edit-budget-amount");
-const resetSpentCheckbox = document.getElementById("reset-spent");
-
-// Product database
-const groceryRecommendations = {
-    "low": [
-        { id: "rice-5kg", name: "Rice (5kg)", price: 8.99, category: "Staples", essential: true },
-        { id: "pasta-1kg", name: "Pasta (1kg)", price: 1.99, category: "Staples", essential: true },
-        { id: "canned-beans", name: "Canned Beans", price: 0.99, category: "Protein", essential: true },
-        { id: "eggs-12", name: "Eggs (12)", price: 2.49, category: "Protein", essential: true },
-        { id: "potatoes-2kg", name: "Potatoes (2kg)", price: 2.99, category: "Vegetables", essential: true }
-    ],
-    "medium": [
-        { id: "chicken-1kg", name: "Chicken Breast (1kg)", price: 7.99, category: "Protein", essential: true },
-        { id: "milk-2l", name: "Fresh Milk (2L)", price: 2.49, category: "Dairy", essential: true },
-        { id: "bread", name: "Whole Wheat Bread", price: 2.99, category: "Bakery", essential: true },
-        { id: "apples-1kg", name: "Apples (1kg)", price: 3.49, category: "Fruits", essential: false },
-        { id: "frozen-veg", name: "Frozen Vegetables (1kg)", price: 2.99, category: "Vegetables", essential: true }
-    ],
-    "high": [
-        { id: "salmon-500g", name: "Salmon Fillet (500g)", price: 9.99, category: "Protein", essential: false },
-        { id: "avocados", name: "Organic Avocados (4)", price: 5.99, category: "Fruits", essential: false },
-        { id: "olive-oil", name: "Extra Virgin Olive Oil", price: 8.99, category: "Pantry", essential: false },
-        { id: "yogurt", name: "Greek Yogurt (1kg)", price: 4.99, category: "Dairy", essential: false },
-        { id: "mixed-nuts", name: "Mixed Nuts (500g)", price: 7.99, category: "Snacks", essential: false }
-    ]
-};
+let userBudgetId = null;
 
 // Check if user is authenticated
 auth.onAuthStateChanged((user) => {
     if (user) {
         currentUser = user;
         checkUserBudget();
-        
-        // Load shopping list if on profile page
-        if (document.getElementById("shopping-list-items")) {
-            loadShoppingList();
-        }
-        
-        // Load recommendations if on groceries page
-        if (document.getElementById("recommendations-container")) {
-            loadRecommendations();
-        }
+        loadShoppingList(); // Always load shopping list on budget page
     } else {
         console.log("User not logged in. Redirecting...");
         window.location.href = "../App/login.html";
@@ -60,60 +35,94 @@ const MAX_MEMBERS = 5;
 
 // Check if user has a budget
 async function checkUserBudget() {
-    const budgetSnap = await db.collection("groupBudget")
-        .where("members", "array-contains", currentUser.uid)
-        .get();
+    try {
+        const budgetSnap = await db.collection("groupBudget")
+            .where("members", "array-contains", currentUser.uid)
+            .get();
 
-    if (!budgetSnap.empty) {
-        const budgetData = budgetSnap.docs[0].data();
-        userBudgetId = budgetSnap.docs[0].id;
-        loadBudgetData(budgetData);
-        document.getElementById("budget-overview").style.display = "block";
-        document.getElementById("action-buttons").style.display = "none";
-    } else {
-        document.getElementById("budget-overview").style.display = "none";
-        document.getElementById("action-buttons").style.display = "block";
-        document.getElementById("create-budget-btn").style.display = "block";
-        document.getElementById("join-group-btn").style.display = "block";
+        if (!budgetSnap.empty) {
+            const budgetData = budgetSnap.docs[0].data();
+            userBudgetId = budgetSnap.docs[0].id;
+            loadBudgetData(budgetData);
+            document.getElementById("budget-overview").style.display = "block";
+            document.getElementById("shopping-list-container").style.display = "block";
+            document.getElementById("action-buttons").style.display = "none";
+        } else {
+            document.getElementById("budget-overview").style.display = "none";
+            document.getElementById("shopping-list-container").style.display = "none";
+            document.getElementById("action-buttons").style.display = "block";
+            document.getElementById("create-budget-btn").style.display = "block";
+            document.getElementById("join-group-btn").style.display = "block";
+        }
+    } catch (error) {
+        console.error("Error checking user budget:", error);
+        showNotification("Failed to load budget data", true);
     }
 }
 
 // Load budget data 
 function loadBudgetData(budgetData) {
     document.getElementById("budget-name").textContent = `${budgetData.name || "No Name Budget"}`;
-    document.getElementById("spent-amount").textContent = `$${budgetData.spent || 0}`;
-    document.getElementById("remaining-amount").textContent = `$${budgetData.budgetAmount - (budgetData.spent || 0)}`;
+    document.getElementById("spent-amount").textContent = `$${(budgetData.spent || 0).toFixed(2)}`;
+    document.getElementById("remaining-amount").textContent = `$${(budgetData.budgetAmount - (budgetData.spent || 0)).toFixed(2)}`;
+    
+    // Update progress bar
+    const progressPercentage = ((budgetData.spent || 0) / budgetData.budgetAmount) * 100;
+    document.getElementById("progress-bar").style.width = `${Math.min(progressPercentage, 100)}%`;
 }
 
 // Shopping List Functions
 async function loadShoppingList() {
+    const listContainer = document.getElementById("shopping-list-items");
+    const totalElement = document.getElementById("shopping-list-total");
+    
+    if (!listContainer) return;
+
     try {
+        // Show loading state
+        listContainer.innerHTML = `
+            <div class="loading-spinner">
+                <i class="fas fa-spinner fa-spin"></i>
+                <span>Loading your shopping list...</span>
+            </div>
+        `;
+
         const shoppingListRef = db.collection("shoppingLists")
             .doc(currentUser.uid)
             .collection("items");
-        const snapshot = await shoppingListRef.orderBy("lastUpdated", "desc").get();
-        
-        const listContainer = document.getElementById("shopping-list-items");
+            
+        const snapshot = await shoppingListRef
+            .orderBy("lastUpdated", "desc")
+            .get();
+
+        // Clear container
         listContainer.innerHTML = "";
-        
         let total = 0;
-        
+
         if (snapshot.empty) {
             listContainer.innerHTML = '<p class="empty-message">Your shopping list is empty</p>';
-            document.getElementById("shopping-list-total").textContent = "$0.00";
+            totalElement.textContent = "$0.00";
             return;
         }
-        
+
+        // Process each item
         snapshot.forEach(doc => {
             const item = doc.data();
-            const itemTotal = item.price * (item.quantity || 1);
+            if (!item.name || typeof item.price !== 'number') {
+                console.warn("Invalid item format:", item);
+                return;
+            }
+
+            const quantity = item.quantity || 1;
+            const itemTotal = item.price * quantity;
             total += itemTotal;
-            
+
             const listItem = document.createElement("div");
             listItem.className = "shopping-list-item";
             listItem.innerHTML = `
                 <div class="item-info">
-                    <span class="item-name">${item.name} ${item.quantity > 1 ? `(x${item.quantity})` : ''}</span>
+                    <span class="item-name">${item.name}</span>
+                    ${quantity > 1 ? `<span class="item-quantity">×${quantity}</span>` : ''}
                     <span class="item-price">$${itemTotal.toFixed(2)}</span>
                 </div>
                 <button class="remove-item" data-id="${doc.id}">
@@ -122,16 +131,23 @@ async function loadShoppingList() {
             `;
             listContainer.appendChild(listItem);
         });
-        
-        document.getElementById("shopping-list-total").textContent = `$${total.toFixed(2)}`;
-        
+
+        // Update total
+        totalElement.textContent = `$${total.toFixed(2)}`;
+
         // Add event listeners to remove buttons
         document.querySelectorAll('.remove-item').forEach(button => {
             button.addEventListener('click', removeFromShoppingList);
         });
+
     } catch (error) {
         console.error("Error loading shopping list:", error);
-        showNotification("Failed to load shopping list", true);
+        listContainer.innerHTML = `
+            <div class="error-message">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>Failed to load shopping list</p>
+            </div>
+        `;
     }
 }
 
@@ -160,7 +176,7 @@ async function removeFromShoppingList(event) {
         // Remove item
         await itemRef.delete();
         
-        // Update budget
+        // Update budget if exists
         if (userBudgetId) {
             await db.collection("groupBudget").doc(userBudgetId).update({
                 spent: FieldValue.increment(-itemTotal)
@@ -179,6 +195,12 @@ async function removeFromShoppingList(event) {
                 const currentSpent = parseFloat(spentElement.textContent.replace('$', ''));
                 spentElement.textContent = `$${(currentSpent - itemTotal).toFixed(2)}`;
             }
+
+            // Update progress bar
+            const budgetDoc = await db.collection("groupBudget").doc(userBudgetId).get();
+            const budgetData = budgetDoc.data();
+            const progressPercentage = (budgetData.spent / budgetData.budgetAmount) * 100;
+            document.getElementById("progress-bar").style.width = `${Math.min(progressPercentage, 100)}%`;
         }
         
         // Reload shopping list
@@ -188,141 +210,6 @@ async function removeFromShoppingList(event) {
     } catch (error) {
         console.error("Error removing item:", error);
         showNotification("Failed to remove item", true);
-    }
-}
-
-// Product Recommendation Functions
-function loadRecommendations() {
-    const remainingBudget = parseFloat(document.getElementById("remaining-amount").textContent.replace('$', ''));
-    const percentage = 0.3; // Default to 30% of remaining budget
-    const groceryBudget = remainingBudget * percentage;
-    
-    let recommendationTier;
-    if (groceryBudget < 15) {
-        recommendationTier = "low";
-    } else if (groceryBudget < 40) {
-        recommendationTier = "medium";
-    } else {
-        recommendationTier = "high";
-    }
-
-    displayRecommendations(groceryRecommendations[recommendationTier], groceryBudget);
-}
-
-function displayRecommendations(products, budget) {
-    const container = document.getElementById("recommendations-container");
-    container.innerHTML = "";
-
-    const header = document.createElement("div");
-    header.className = "recommendations-header";
-    header.innerHTML = `
-        <h3>Recommended Groceries (Budget: $${budget.toFixed(2)})</h3>
-        <p>Based on your available funds, we recommend these items:</p>
-    `;
-    container.appendChild(header);
-
-    const productsGrid = document.createElement("div");
-    productsGrid.className = "products-grid";
-
-    products.forEach(product => {
-        const card = document.createElement("div");
-        card.className = `product-card ${product.essential ? 'essential' : 'premium'}`;
-        card.innerHTML = `
-            <div class="product-image">
-                <img src="https://via.placeholder.com/150" alt="${product.name}">
-                ${product.essential ? '<span class="essential-badge">Essential</span>' : ''}
-            </div>
-            <div class="product-info">
-                <h4>${product.name}</h4>
-                <p class="category">${product.category}</p>
-                <p class="price">$${product.price.toFixed(2)}</p>
-                <button class="add-to-cart" data-id="${product.id}" data-name="${product.name}" data-price="${product.price}">
-                    <i class="fas fa-cart-plus"></i> Add to List
-                </button>
-            </div>
-        `;
-        productsGrid.appendChild(card);
-    });
-
-    container.appendChild(productsGrid);
-
-    // Add event listeners
-    document.querySelectorAll('.add-to-cart').forEach(button => {
-        button.addEventListener('click', addToShoppingList);
-    });
-}
-
-async function addToShoppingList(event) {
-    if (!userBudgetId) {
-        showNotification("No budget found. Please set up your budget first.", true);
-        return;
-    }
-
-    const button = event.currentTarget;
-    const productId = button.getAttribute('data-id');
-    const productName = button.getAttribute('data-name');
-    const productPrice = parseFloat(button.getAttribute('data-price'));
-
-    try {
-        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
-        button.disabled = true;
-
-        // Add to shopping list
-        const shoppingListRef = db.collection("shoppingLists")
-            .doc(currentUser.uid)
-            .collection("items")
-            .doc(productId);
-
-        const itemDoc = await shoppingListRef.get();
-        
-        if (itemDoc.exists) {
-            // Update quantity if exists
-            await shoppingListRef.update({
-                quantity: FieldValue.increment(1),
-                lastUpdated: FieldValue.serverTimestamp()
-            });
-        } else {
-            // Add new item
-            await shoppingListRef.set({
-                name: productName,
-                price: productPrice,
-                quantity: 1,
-                addedAt: FieldValue.serverTimestamp(),
-                lastUpdated: FieldValue.serverTimestamp()
-            });
-        }
-
-        // Update budget
-        await db.collection("groupBudget").doc(userBudgetId).update({
-            spent: FieldValue.increment(productPrice)
-        });
-
-        // Update UI
-        const remainingElement = document.getElementById("remaining-amount");
-        const spentElement = document.getElementById("spent-amount");
-        
-        if (remainingElement) {
-            const currentRemaining = parseFloat(remainingElement.textContent.replace('$', ''));
-            remainingElement.textContent = `$${(currentRemaining - productPrice).toFixed(2)}`;
-        }
-        
-        if (spentElement) {
-            const currentSpent = parseFloat(spentElement.textContent.replace('$', ''));
-            spentElement.textContent = `$${(currentSpent + productPrice).toFixed(2)}`;
-        }
-
-        showNotification(`${productName} added to your shopping list!`);
-        
-        // Reload shopping list if on profile page
-        if (document.getElementById("shopping-list-items")) {
-            await loadShoppingList();
-        }
-    } catch (error) {
-        console.error("Error adding to shopping list:", error);
-        showNotification("Failed to add item to your list", true);
-    } finally {
-        button.innerHTML = '<i class="fas fa-cart-plus"></i> Add to List';
-        button.disabled = false;
     }
 }
 
@@ -340,6 +227,97 @@ function showNotification(message, isError = false) {
 }
 
 function generateAccountCode() {
-    return Math.random().toString(36).substring(2, 10).toUpperCase();
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let result = '';
+    for (let i = 0; i < 8; i++) {
+        if (i > 0 && i % 4 === 0) result += '-';
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
 }
 
+// Initialize Edit Budget Modal
+const editModal = document.getElementById("edit-budget-modal");
+const closeModal = document.querySelector(".close");
+const editForm = document.getElementById("edit-budget-form");
+const editBudgetName = document.getElementById("edit-budget-name");
+const editBudgetAmount = document.getElementById("edit-budget-amount");
+const resetSpentCheckbox = document.getElementById("reset-spent");
+
+// Open modal
+document.getElementById("edit-budget-btn").addEventListener("click", async () => {
+    if (!userBudgetId) {
+        showNotification("There is no budget to modify", true);
+        return;
+    }
+
+    try {
+        const budgetDoc = await db.collection("groupBudget").doc(userBudgetId).get();
+        if (!budgetDoc.exists) {
+            throw new Error("Budget document not found");
+        }
+
+        const budgetData = budgetDoc.data();
+        editBudgetName.value = budgetData.name || "";
+        editBudgetAmount.value = budgetData.budgetAmount || 0;
+        editModal.style.display = "block";
+    } catch (error) {
+        console.error("Error loading budget:", error);
+        showNotification("Failed to load budget details", true);
+    }
+});
+
+// Close modal handlers
+closeModal.addEventListener("click", () => {
+    editModal.style.display = "none";
+});
+
+window.addEventListener("click", (event) => {
+    if (event.target === editModal) {
+        editModal.style.display = "none";
+    }
+});
+
+// Form submission
+editForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    
+    const saveBtn = document.querySelector("#edit-budget-form button[type='submit']");
+    const originalBtnText = saveBtn.innerHTML;
+    
+    try {
+        saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+        saveBtn.disabled = true;
+
+        const newBudgetName = editBudgetName.value.trim();
+        const newBudgetAmount = parseFloat(editBudgetAmount.value);
+        const resetSpent = resetSpentCheckbox.checked;
+
+        if (!newBudgetName || isNaN(newBudgetAmount)) {
+            throw new Error("Please enter valid budget details");
+        }
+
+        const updateData = {
+            name: newBudgetName,
+            budgetAmount: newBudgetAmount
+        };
+
+        if (resetSpent) {
+            updateData.spent = 0;
+        }
+
+        await db.collection("groupBudget").doc(userBudgetId).update(updateData);
+        
+        showNotification("Budget updated successfully!");
+        editModal.style.display = "none";
+        
+        // Refresh the displayed budget data
+        await checkUserBudget();
+    } catch (error) {
+        console.error("Error updating budget:", error);
+        showNotification(error.message || "Failed to update budget", true);
+    } finally {
+        saveBtn.innerHTML = originalBtnText;
+        saveBtn.disabled = false;
+    }
+});

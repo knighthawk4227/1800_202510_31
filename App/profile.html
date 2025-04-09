@@ -1,16 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Profile</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Catamaran:wght@700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <title>Profile | Survival Wallet</title>
   <link rel="stylesheet" href="../styles/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-  <script src="../scripts/profile.js"></script>
 </head>
 <body>
   <div class="container">
@@ -49,56 +47,45 @@
     <!-- Main Content -->
     <main class="main-content">
       <section class="profile-section">
-        <div class="profile-info">
-          <h2>User Profile</h2>
-          <div class="name-code-container">
-            <div>
-              <p id="userName"></p>
-              <p id="userEmail"></p>
-            </div>
-            <div class="account-code">
-              <span class="code-label">Budget Code:</span>
-              <span class="code-value" id="accountCode">Loading...</span>
-              <button class="copy-btn" id="copyCodeBtn" title="Copy to clipboard">
-                <i class="fas fa-copy"></i>
-              </button>
-            </div>
+        <div class="profile-header">
+          <div class="profile-info">
+            <h1><i class="fas fa-user-circle"></i> <span id="userName">User</span></h1>
+            <p><i class="fas fa-envelope"></i> <span id="userEmail">user@example.com</span></p>
           </div>
+        </div>
 
-          <div class="profile-stats">
-            <div class="stat-item">
-              <div class="stat-value" id="budget-name">Loading...</div>
-              <div class="stat-label">Budget Name</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-value" id="spent-amount">$0.00</div>
-              <div class="stat-label">Total Spent</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-value" id="remaining-amount">$0.00</div>
-              <div class="stat-label">Remaining</div>
-            </div>
+        <div class="profile-stats">
+          <div class="stat-item">
+            <i class="fas fa-wallet"></i>
+            <span class="stat-label">Budget</span>
+            <span class="stat-value" id="budget-name">No budget</span>
           </div>
-
-          <!-- Shopping List Section -->
-          <div class="shopping-list-container" id="shopping-list-container">
-            <div class="shopping-list-header">
-              <h3>Your Shopping List</h3>
-              <span class="shopping-list-total" id="shopping-list-total">$0.00</span>
-            </div>
-            <div class="shopping-list-items" id="shopping-list-items">
-              <div class="loading-spinner">
-                <i class="fas fa-spinner fa-spin"></i>
-                <span>Loading your shopping list...</span>
-              </div>
-            </div>
+          <div class="stat-item">
+            <i class="fas fa-money-bill-wave"></i>
+            <span class="stat-label">Spent</span>
+            <span class="stat-value" id="spent-amount">$0.00</span>
           </div>
+          <div class="stat-item">
+            <i class="fas fa-piggy-bank"></i>
+            <span class="stat-label">Remaining</span>
+            <span class="stat-value" id="remaining-amount">$0.00</span>
+          </div>
+        </div>
 
-          <div class="actions">
-            <button id="edit-budget-btn">
-              <i class="fas fa-edit"></i> Edit Budget
+        <div class="name-code-container">
+          <div class="account-code">
+            <span class="code-label">Budget Code:</span>
+            <span class="code-value" id="accountCode">No budget</span>
+            <button id="copyCodeBtn" class="copy-btn">
+              <i class="fas fa-copy"></i>
             </button>
           </div>
+        </div>
+
+        <div class="actions">
+          <button id="edit-budget-btn">
+            <i class="fas fa-edit"></i> Edit Budget
+          </button>
         </div>
       </section>
     </main>
@@ -119,17 +106,20 @@
       <form id="edit-budget-form">
         <label for="edit-budget-name">Budget Name:</label>
         <input type="text" id="edit-budget-name" placeholder="Enter new budget name" required>
+        
         <label for="edit-budget-amount">Budget Amount:</label>
-        <input type="number" id="edit-budget-amount" placeholder="Enter new budget amount" min="0" step="0.01" required>
-        <div>
+        <input type="number" id="edit-budget-amount" placeholder="Enter new budget amount" required>
+        
+        <div class="checkbox-container">
           <input type="checkbox" id="reset-spent">
           <label for="reset-spent">Reset spent amount to $0</label>
         </div>
-        <button type="submit" id="save-budget-btn">
-          <i class="fas fa-save"></i> Save Changes
-        </button>
+        
+        <button type="submit">Save Changes</button>
       </form>
     </div>
   </div>
+
+  <script src="../scripts/profile.js"></script>
 </body>
 </html>

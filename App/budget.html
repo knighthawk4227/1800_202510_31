@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Budget app</title>
+  <title>Budget | Survival Wallet</title>
+  <link rel="stylesheet" href="../styles/style.css">
   <link rel="stylesheet" href="../styles/budget-style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -19,7 +20,7 @@
         <span>Survival Wallet</span>
       </div>
       <div class="buttons">
-        <a href="index.html" aria-current="page">
+        <a href="index.html">
           <i class="fas fa-home"></i>
           <span>Home</span>
         </a>
@@ -27,7 +28,7 @@
           <i class="fas fa-user"></i>
           <span>Profile</span>
         </a>
-        <a href="budget.html">
+        <a href="budget.html" aria-current="page">
           <i class="fas fa-chart-pie"></i>
           <span>Budget</span>
         </a>
@@ -36,13 +37,7 @@
           <span>Groceries</span>
         </a>
         <div class="auth-buttons">
-          <!-- Login button (shown when not logged in) -->
-          <a href="login.html" class="login-btn" id="loginButton">
-            <i class="fas fa-sign-in-alt"></i>
-            <span>Logout  </span>
-          </a>
-          <!-- Logout button (shown when logged in) -->
-          <a href="#" class="logout-btn" id="logoutButton" style="display: none;">
+          <a href="#" class="logout-btn" id="logoutButton">
             <i class="fas fa-sign-out-alt"></i>
             <span>Logout</span>
           </a>
@@ -50,76 +45,107 @@
       </div>
     </nav>
 
-    <main class="main-content">
-      <section class="budget-section">
-        <h2>Survival Wallet</h2>
-        <div id="budget-overview" class="budget-overview" style="display: none;">
-          <div class="budget-card">
-            <h3 id="budget-name">This Month's Budget</h3>
-            <div class="budget-stats">
-              <div class="stat-item">
-                <i class="fas fa-money-bill-wave"></i>
-                <span class="label">Spent</span>
-                <span class="value" id="spent-amount">$0.00</span>
-              </div>
-              <div class="stat-item">
-                <i class="fas fa-wallet"></i>
-                <span class="label">Remaining</span>
-                <span class="value-remaining" id="remaining-amount">$0.00</span>
-              </div>
+    <!-- Main Content -->
+    <main class="main-content budget-page">
+      <section class="budget-overview">
+        <h2><i class="fas fa-wallet"></i> Budget Overview</h2>
+        
+        <div id="budget-overview" class="budget-card" style="display: none;">
+          <h3 id="budget-name">Monthly Budget</h3>
+          
+          <div class="budget-stats">
+            <div class="stat-item">
+              <i class="fas fa-money-bill-wave"></i>
+              <span class="stat-label">Spent</span>
+              <span class="stat-value" id="spent-amount">$0.00</span>
             </div>
-            <div class="butt">
-              <button id="edit-budget-btn" type="button" >Edit Budget</button>
+            <div class="stat-item">
+              <i class="fas fa-piggy-bank"></i>
+              <span class="stat-label">Remaining</span>
+              <span class="stat-value" id="remaining-amount">$0.00</span>
             </div>
+          </div>
+          
+          <div class="progress-container">
+            <span class="stat-label">Budget Usage</span>
             <div class="progress-bar">
               <div id="progress-bar" class="progress" style="width: 0%"></div>
             </div>
           </div>
+          
+          <div class="action-buttons">
+            <button id="edit-budget-btn" class="action-button">
+              <i class="fas fa-edit"></i> Edit Budget
+            </button>
+          </div>
         </div>
-        <div id="action-buttons" style="display: none;">
-          <button id="create-budget-btn">Create Budget</button>
-          <button id="join-group-btn">Join Budget</button>
-          <div id="join-error" style="color: red; margin-top: 10px;"></div>
+        
+        <div id="action-buttons" class="action-buttons" style="display: none;">
+          <button id="create-budget-btn" class="action-button">
+            <i class="fas fa-plus"></i> Create Budget
+          </button>
+          <button id="join-group-btn" class="action-button">
+            <i class="fas fa-user-plus"></i> Join Budget
+          </button>
         </div>
+        
+        <div id="join-error" class="error-message" style="display: none;"></div>
+      </section>
+
+      <!-- Shopping List Section -->
+      <section id="shopping-list-container" class="shopping-list-container" style="display: none;">
+        <div class="shopping-list-header">
+          <h3><i class="fas fa-shopping-basket"></i> Shopping List</h3>
+          <span class="shopping-list-total" id="shopping-list-total">$0.00</span>
+        </div>
+        <div id="shopping-list-items" class="shopping-list-items"></div>
       </section>
     </main>
+
+    <!-- Footer -->
+    <footer>
+      <div class="foot">
+        <p class="copyright">&copy; 2025 Survival Wallet</p>
+      </div>
+    </footer>
   </div>
 
+  <!-- Edit Budget Modal -->
   <div id="edit-budget-modal" class="modal">
     <div class="modal-content">
       <span class="close">&times;</span>
       <h2>Edit Budget</h2>
       <form id="edit-budget-form">
         <label for="edit-budget-name">Budget Name:</label>
-        <input type="text" id="edit-budget-name" placeholder="Enter new budget name" required />
-  
+        <input type="text" id="edit-budget-name" placeholder="Enter budget name" required>
+        
         <label for="edit-budget-amount">Budget Amount:</label>
-        <input type="number" id="edit-budget-amount" placeholder="Enter new budget amount" required />
-  
-        <div>
-          <input type="checkbox" id="reset-spent" />
-          <label for="reset-spent">Reset spent amount to $0</label>
+        <input type="number" id="edit-budget-amount" placeholder="Enter amount" required>
+        
+        <div class="checkbox-container">
+          <input type="checkbox" id="reset-spent">
+          <label for="reset-spent">Reset spent amount</label>
         </div>
-  
+        
         <button type="submit">Save Changes</button>
       </form>
     </div>
   </div>
 
+  <!-- Join Budget Modal -->
   <div id="join-budget-modal" class="modal">
     <div class="modal-content">
-      <span class="close join-close">&times;</span>
-      <h2>Join a Budget</h2>
+      <span class="close">&times;</span>
+      <h2>Join Budget Group</h2>
       <form id="join-budget-form">
         <label for="join-budget-code">Budget Code:</label>
-        <input type="text" id="join-budget-code" placeholder="Enter budget code" required />
-        <div id="join-error" style="color: red; margin-top: 10px;"></div>
-        <button type="submit">Join Budget</button>
+        <input type="text" id="join-budget-code" placeholder="Enter group code" required>
+        <div id="join-error" class="error-message" style="display: none;"></div>
+        <button type="submit">Join Group</button>
       </form>
     </div>
   </div>
 
-  <script src="../scripts/index.js"></script>
   <script src="../scripts/budget.js"></script>
 </body>
 </html>

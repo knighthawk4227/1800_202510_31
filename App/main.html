@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Grocery Recommendations</title>
+  <title>Groceries | Survival Wallet</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="Main products page" content="My 1800 App">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Catamaran:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="../styles/style.css">
-  
-  <!-- Firebase SDK -->
+  <link rel="stylesheet" href="../styles/groceries-style.css">
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
@@ -23,7 +21,7 @@
         <span>Survival Wallet</span>
       </div>
       <div class="buttons">
-        <a href="index.html" aria-current="page">
+        <a href="index.html">
           <i class="fas fa-home"></i>
           <span>Home</span>
         </a>
@@ -35,18 +33,12 @@
           <i class="fas fa-chart-pie"></i>
           <span>Budget</span>
         </a>
-        <a href="main.html">
+        <a href="main.html" aria-current="page">
           <i class="fas fa-shopping-cart"></i>
           <span>Groceries</span>
         </a>
         <div class="auth-buttons">
-          <!-- Login button (shown when not logged in) -->
-          <a href="login.html" class="login-btn" id="loginButton">
-            <i class="fas fa-sign-in-alt"></i>
-            <span>Logout  </span>
-          </a>
-          <!-- Logout button (shown when logged in) -->
-          <a href="#" class="logout-btn" id="logoutButton" style="display: none;">
+          <a href="#" class="logout-btn" id="logoutButton">
             <i class="fas fa-sign-out-alt"></i>
             <span>Logout</span>
           </a>
@@ -55,23 +47,46 @@
     </nav>
 
     <!-- Main Content -->
-    <main class="main-content">
-      <section class="budget-section">
-        <h2>Grocery Recommendations Based on Your Budget</h2>
-        <div class="budget-display">
-          <div class="budget-info">
-            <p>Your total budget: <span id="total-budget">$0.00</span></p>
-            <p>Amount spent: <span id="spent-amount">$0.00</span></p>
-            <p>Remaining budget: <span id="remaining-budget">$0.00</span></p>
+    <main class="main-content groceries-page">
+      <section class="groceries-header">
+        <h1><i class="fas fa-utensils"></i> Grocery Recommendations</h1>
+        <p>Smart suggestions based on your budget</p>
+      </section>
+
+      <section class="budget-summary">
+        <div class="budget-cards">
+          <div class="budget-card">
+            <i class="fas fa-wallet"></i>
+            <div>
+              <span class="label">Total Budget</span>
+              <span class="value" id="total-budget">$0.00</span>
+            </div>
           </div>
+          <div class="budget-card">
+            <i class="fas fa-money-bill-wave"></i>
+            <div>
+              <span class="label">Amount Spent</span>
+              <span class="value" id="spent-amount">$0.00</span>
+            </div>
+          </div>
+          <div class="budget-card">
+            <i class="fas fa-piggy-bank"></i>
+            <div>
+              <span class="label">Remaining</span>
+              <span class="value" id="remaining-budget">$0.00</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="budget-controls">
           <div class="budget-range">
-            <label for="budget-percentage">Budget allocation for groceries:</label>
+            <label for="budget-percentage"><i class="fas fa-percentage"></i> Grocery Allocation:</label>
             <select id="budget-percentage">
-              <option value="0.1">10%</option>
               <option value="0.2">20%</option>
-              <option value="0.3" selected>30%</option>
               <option value="0.4">40%</option>
-              <option value="0.5">50%</option>
+              <option value="0.6" selected>60%</option>
+              <option value="0.8">80%</option>
+              <option value="1.0">100%</option>
             </select>
           </div>
           <button id="load-recommendations" class="refresh-btn">
@@ -80,12 +95,12 @@
         </div>
       </section>
 
-      <div id="recommendations-container" class="recommendations-container">
-        <!-- Recommendations will be loaded here -->
+      <section id="recommendations-container" class="recommendations-container">
         <div class="loading-message">
+          <i class="fas fa-spinner fa-spin"></i>
           <p>Loading recommendations based on your budget...</p>
         </div>
-      </div>
+      </section>
     </main>
 
     <!-- Footer -->

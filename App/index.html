@@ -1,129 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <title>My BCIT Project</title>
-  <meta name="comp1800 template" content="My 1800 App">
-
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- Going to change this just didn't know which font to download -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home | Survival Wallet</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Catamaran:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
   <link rel="stylesheet" href="../styles/style.css">
-  <!-- Bootstrap Library CSS CDN go here -->
-  <!-- Boostrap Library JS CDN  go here -->
-
-  <!-- Other libraries go here -->
-
-  <!-- Link to styles of your own -->
-
 </head>
-
 <body>
   <div class="container">
-   <!-- Nav Bar -->
-   <nav class="nav-bar">
-    <div class="logo">
-      <i class="fas fa-wallet"></i>
-      <span>Survival Wallet</span>
-    </div>
-    <div class="buttons">
-      <a href="index.html" aria-current="page">
-        <i class="fas fa-home"></i>
-        <span>Home</span>
-      </a>
-      <a href="profile.html">
-        <i class="fas fa-user"></i>
-        <span>Profile</span>
-      </a>
-      <a href="budget.html">
-        <i class="fas fa-chart-pie"></i>
-        <span>Budget</span>
-      </a>
-      <a href="main.html">
-        <i class="fas fa-shopping-cart"></i>
-        <span>Groceries</span>
-      </a>
-      <div class="auth-buttons">
-        <!-- Login button (shown when not logged in) -->
-        <a href="login.html" class="login-btn" id="loginButton">
-          <i class="fas fa-sign-in-alt"></i>
-          <span>Logout  </span>
-        </a>
-        <!-- Logout button (shown when logged in) -->
-        <a href="#" class="logout-btn" id="logoutButton" style="display: none;">
-          <i class="fas fa-sign-out-alt"></i>
-          <span>Logout</span>
-        </a>
+    <!-- Nav Bar -->
+    <nav class="nav-bar">
+      <div class="logo">
+        <i class="fas fa-wallet"></i>
+        <span>Survival Wallet</span>
       </div>
-    </div>
-  </nav>
+      <div class="buttons">
+        <a href="index.html" aria-current="page">
+          <i class="fas fa-home"></i>
+          <span>Home</span>
+        </a>
+        <a href="profile.html">
+          <i class="fas fa-user"></i>
+          <span>Profile</span>
+        </a>
+        <a href="budget.html">
+          <i class="fas fa-chart-pie"></i>
+          <span>Budget</span>
+        </a>
+        <a href="main.html">
+          <i class="fas fa-shopping-cart"></i>
+          <span>Groceries</span>
+        </a>
+        <div class="auth-buttons">
+          <a href="login.html" class="login-btn" id="loginButton">
+            <i class="fas fa-sign-in-alt"></i>
+            <span>Login</span>
+          </a>
+          <a href="#" class="logout-btn" id="logoutButton" style="display: none;">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+          </a>
+        </div>
+      </div>
+    </nav>
 
     <!-- Header -->
-    <header>
-      <h1>Survival Wallet</h1>
-      <h2>We are here to save all your money</h2>
+    <header class="home-header">
+      <h1>Welcome to Survival Wallet</h1>
+      <h2>Smart budgeting for smarter shopping</h2>
     </header>
 
     <!-- Main Content -->
-    <main class="main-content">
-      <div class="card">
-        <img src="" alt="Placeholder image">
-        <div class="card-content">
-          <h3>I dont know what to put here???</h3>
-          <p>I can also remove it or make less columns</p>
+    <main class="main-content home-page">
+      <section class="features-section">
+        <div class="feature-card">
+          <i class="fas fa-chart-line"></i>
+          <h3>Budget Tracking</h3>
+          <p>Monitor your spending and stay within your financial goals with our intuitive budget tracker.</p>
         </div>
-      </div>
-      <div class="card">
-        <img src="" alt="placeholder image">
-        <div class="card-content">
-          <h3>I was thinking maybe like</h3>
-          <p>Maybe just pictures to make it look nice?????</p>
+        <div class="feature-card">
+          <i class="fas fa-shopping-basket"></i>
+          <h3>Smart Grocery Lists</h3>
+          <p>Create and manage your shopping lists with budget-aware recommendations.</p>
         </div>
-      </div>
-      <div class="card">
-        <img src="" alt="Image placeholder">
-        <div class="card-content">
-          <h3>Coupons or just reccomended products or something</h3>
-          <p>Maybe like budgeting tips?????</p>
+        <div class="feature-card">
+          <i class="fas fa-lightbulb"></i>
+          <h3>Money-Saving Tips</h3>
+          <p>Get personalized suggestions to help you save money on your everyday purchases.</p>
         </div>
-      </div>
-      <div class="card">
-        <img src="" alt="Placeholder Image">
-        <div class="card-content">
-          <h3>If you have any ideas let me know</h3>
-          <p>I honestly just added this section because it makes our website look nice</p>
+        <div class="feature-card">
+          <i class="fas fa-users"></i>
+          <h3>Shared Budgets</h3>
+          <p>Collaborate with family or roommates on shared budgets and shopping lists.</p>
         </div>
-      </div>
+      </section>
+
+      <section class="quick-stats">
+        <div class="stat-card">
+          <i class="fas fa-wallet"></i>
+          <div>
+            <span class="stat-value" id="home-budget">$0.00</span>
+            <span class="stat-label">Monthly Budget</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <i class="fas fa-money-bill-wave"></i>
+          <div>
+            <span class="stat-value" id="home-spent">$0.00</span>
+            <span class="stat-label">Amount Spent</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <i class="fas fa-piggy-bank"></i>
+          <div>
+            <span class="stat-value" id="home-remaining">$0.00</span>
+            <span class="stat-label">Remaining</span>
+          </div>
+        </div>
+      </section>
     </main>
-
-<!-- create a link to invite people to and create code for others to join. -->
-
-
-<!------------------------------>
-<!-- Your HTML Layout go here -->
-<!------------------------------>
-<!-- Stuff for body goes here -->
-
-
-<!---------------------------------------------->
-<!-- Your own JavaScript functions go here    -->
-<!---------------------------------------------->
-
-<!-- Link to scripts of your own -->
-<!-- <script src="./scripts/script.js"></script> -->
 
     <!-- Footer -->
     <footer>
       <div class="foot">
-        <p class="copyright">&copy; 2025 Survival Wallet, The App</p>
+        <p class="copyright">&copy; 2025 Survival Wallet</p>
       </div>
     </footer>
   </div>
-</body>
 
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="../scripts/home.js"></script>
+</body>
 </html>
