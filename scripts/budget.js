@@ -394,4 +394,36 @@ async function logOut(user) {
         }
     });
 });
+
+document.getElementById('create-budget-btn').addEventListener('click', async () => {
+    const name = prompt("Enter a name for your budget:");
+    if (!name) return;
+
+    const amountStr = prompt("Enter the total budget amount:");
+    const amount = parseFloat(amountStr);
+    if (isNaN(amount) || amount <= 0) {
+        alert("Please enter a valid number for the budget amount.");
+        return;
+    }
+
+    try {
+        const newBudget = {
+            name: name.trim(),
+            budgetAmount: amount,
+            spent: 0,
+            code: generateAccountCode(), 
+            members: [currentUser.uid],
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        };
+
+        const docRef = await db.collection("groupBudget").add(newBudget);
+
+        // Update the UI and state
+        userBudgetId = docRef.id;
+        await checkUserBudget();
+    } catch (error) {
+        console.error("Error creating budget:", error);
+        showNotification("Failed to create budget", true);
+    }
+});
   document.addEventListener("DOMContentLoaded", initApp);
