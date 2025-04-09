@@ -54,7 +54,7 @@ auth.onAuthStateChanged((user) => {
         currentUser = user;
         loadUserBudget();
     } else {
-        window.location.href = "../App/login.html";
+        window.location.href = '/login.html';
     }
 });
 
@@ -264,7 +264,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         logOutButton.addEventListener('click', async () => {
             try {
                 await auth.signOut();
-                window.location.href = 'login.html';
+                window.location.href = '/login.html';
             } catch(error) {
                 console.log("there was an error", error);
             }

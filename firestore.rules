@@ -1,0 +1,18 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Allow read and write only if the user is authenticated
+    match /groupBudget/{budgetId} {
+      allow read, write: if request.auth != null;
+    }
+
+    // Secure user-specific documents
+    match /users/{userId} {
+      allow read, write: if request.auth.uid == userId;
+    }
+        match /shoppingLists/{userId}/items/{itemId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+  }
+}

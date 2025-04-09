@@ -27,7 +27,7 @@ auth.onAuthStateChanged((user) => {
         loadShoppingList(); // Always load shopping list on budget page
     } else {
         console.log("User not logged in. Redirecting...");
-        window.location.href = "../App/login.html";
+        window.location.href = 'login.html';
     }
 });
 

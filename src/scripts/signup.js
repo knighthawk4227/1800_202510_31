@@ -74,7 +74,7 @@ const firebaseConfig = {
           });
   
           // ✅ Redirect to profile after successful signup
-          window.location.href = "../App/profile.html";
+          window.location.href = "profile.html";
   
         } catch (error) {
           console.error("Signup error:", error);

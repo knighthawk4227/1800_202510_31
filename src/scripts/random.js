@@ -10,7 +10,7 @@ import firebase from './scripts/index.js';
 //         console.log("pass" + pass);
 //         console.log("successfuly logged in");
 //         alert("logged in");
-//         window.location.href = '../App/login.html';
+//         window.location.href = 'login.html';
 //     // });
 // }
 

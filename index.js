@@ -91,7 +91,7 @@ auth.onAuthStateChanged((user) => {
     if (user) {
         updateUIForAuthState(user);
     } else {
-        window.location.href = "../App/login.html";
+        window.location.href = "login.html";
     }
     hideLoading();
 });
@@ -123,7 +123,7 @@ window.signup = async function (first, email, password) {
             monthlyBudget: 0
         });
         
-        window.location.href = "../App/index.html";
+        window.location.href = "index.html";
     } catch (error) {
         console.error("Signup error:", error);
         showError("Failed to create account. Please try again.");
@@ -143,12 +143,12 @@ window.login = async function (email, password) {
         showLoading();
         const userCredential = await auth.signInWithEmailAndPassword(email, password);
         const user = userCredential.user;
-        window.location.href = "../App/index.html";
+        window.location.href = "index.html";
     } catch (error) {
         console.error("Login error:", error);
         if (error.code === 'auth/user-not-found') {
             if (confirm("No account found under that email, would you like to make one?")) {
-                window.location.href = "../App/signup.html";
+                window.location.href = "signup.html";
             }
         } else {
             showError("Failed to sign in. Please try again.");

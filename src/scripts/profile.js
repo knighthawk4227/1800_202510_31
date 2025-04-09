@@ -50,7 +50,7 @@ function initAuthStateListener() {
               await loadBudgetData();
               
           } else {
-              window.location.href = "../App/login.html";
+              window.location.href = '/login.html';
           }
       } catch (error) {
           console.error("Auth state change error:", error);
@@ -213,7 +213,7 @@ async function logOut(user) {
       e.preventDefault();
       try {
         await auth.signOut();
-        window.location.href = 'login.html';
+        window.location.href = '/login.html';
       } catch(error) {
         console.log("there was an error", error);
       }

@@ -30,7 +30,7 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
     const user = userCredential.user;
 
     // Redirect to the profile page after successful login
-    window.location.href = "../App/profile.html";
+    window.location.href = 'profile.html';
   } catch (error) {
     console.error("Login error:", error);
     let errorMessage = "An error occurred. Please try again.";
