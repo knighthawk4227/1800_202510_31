@@ -251,11 +251,24 @@ function showError(message) {
     `;
 }
 
+
+
 // Event listeners
 document.getElementById("load-recommendations").addEventListener("click", loadRecommendations);
 document.getElementById("budget-percentage").addEventListener("change", loadRecommendations);
 
 // Initial load
-document.addEventListener("DOMContentLoaded", () => {
-    // Any initialization code if needed
+document.addEventListener("DOMContentLoaded", async () => {
+    function logOut() {
+        const logOutButton = document.getElementById('logoutButton');
+        logOutButton.addEventListener('click', async () => {
+            try {
+                await auth.signOut();
+                window.location.href = 'login.html';
+            } catch(error) {
+                console.log("there was an error", error);
+            }
+        });
+    }
+    logOut();
 });

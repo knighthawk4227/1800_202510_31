@@ -32,6 +32,7 @@ const copyCodeBtn = document.getElementById("copyCodeBtn");
 function initApp() {
   initAuthStateListener();
   initEditBudgetModal();
+  logOut();
 }
 
 // Handle authentication state changes
@@ -206,5 +207,17 @@ function showNotification(message, isError = false) {
   }, 3000);
 }
 
+async function logOut(user) {
+    const logoutBtn = document.getElementById('logoutButton');
+      logoutBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      try {
+        await auth.signOut();
+        window.location.href = 'login.html';
+      } catch(error) {
+        console.log("there was an error", error);
+      }
+    });
+  }
 // Initialize the application when DOM is loaded
 document.addEventListener("DOMContentLoaded", initApp);
