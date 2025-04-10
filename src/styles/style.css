@@ -748,57 +748,80 @@ footer .copyright {
   to { opacity: 0; }
 }
 
-/* ====================== */
-/* Improved Media Queries */
-/* ====================== */
 
 /* Tablet and Small Laptop Screens */
 @media (max-width: 1024px) {
   .container {
     grid-template-columns: 1fr;
-    grid-template-rows: auto auto 1fr auto;
+    grid-template-rows: auto 1fr auto auto; /* Added extra row for bottom nav */
   }
 
   .nav-bar {
-    position: sticky;
-    top: 0;
+    position: fixed;
+    bottom: 0;
+    top: auto;
     height: auto;
     width: 100%;
     flex-direction: row;
-    padding: 10px 20px;
+    padding: 10px 0;
     align-items: center;
+    justify-content: space-around;
+    z-index: 100;
   }
 
   .nav-bar .logo {
-    margin-bottom: 0;
-    margin-right: auto;
+    display: none; /* Hide logo on mobile */
   }
 
   .nav-bar .buttons {
     flex-direction: row;
-    gap: 10px;
-    align-items: center;
+    gap: 0;
+    width: 100%;
+    justify-content: space-around;
+  }
+
+  .nav-bar a {
+    flex-direction: column;
+    padding: 10px 5px;
+    font-size: 0.7rem;
+    gap: 5px;
+    text-align: center;
+    width: 100%;
+  }
+
+  .nav-bar a span {
+    display: none; /* Hide text labels on mobile */
+  }
+
+  .nav-bar a i {
+    font-size: 1.2rem; /* Make icons slightly larger */
+    margin: 0 auto;
   }
 
   .auth-buttons {
     margin-top: 0;
     padding-top: 0;
     border-top: none;
-    margin-left: auto;
+    margin-left: 0;
+    width: auto;
   }
 
   header {
     grid-column: 1;
+    grid-row: 1;
     padding: 30px 20px;
   }
 
   .main-content {
     grid-column: 1;
+    grid-row: 2;
     padding: 1.5rem;
+    padding-bottom: 70px; /* Add padding to prevent content from being hidden behind nav */
   }
 
   footer {
     grid-column: 1;
+    grid-row: 3;
   }
 
   .profile-section,
@@ -811,24 +834,15 @@ footer .copyright {
 /* Large Mobile Devices */
 @media (max-width: 768px) {
   .nav-bar {
-    flex-direction: column;
-    padding: 10px;
+    padding: 8px 0;
   }
 
-  .nav-bar .logo {
-    margin-right: 0;
-    margin-bottom: 10px;
+  .nav-bar a {
+    padding: 8px 5px;
   }
 
-  .nav-bar .buttons {
-    flex-direction: column;
-    width: 100%;
-    gap: 5px;
-  }
-
-  .auth-buttons {
-    margin-left: 0;
-    width: 100%;
+  .nav-bar a i {
+    font-size: 1.1rem;
   }
 
   header h1 {
@@ -866,6 +880,18 @@ footer .copyright {
 
 /* Small Mobile Devices */
 @media (max-width: 480px) {
+  .nav-bar {
+    padding: 6px 0;
+  }
+
+  .nav-bar a {
+    padding: 6px 3px;
+  }
+
+  .nav-bar a i {
+    font-size: 1rem;
+  }
+
   header {
     padding: 20px 15px;
   }
@@ -880,6 +906,7 @@ footer .copyright {
 
   .main-content {
     padding: 1rem;
+    padding-bottom: 60px; /* Adjusted padding for smaller nav */
   }
 
   .products-grid {
@@ -902,8 +929,11 @@ footer .copyright {
 /* Very Small Mobile Devices */
 @media (max-width: 360px) {
   .nav-bar a {
-    padding: 10px 15px;
-    font-size: 0.85rem;
+    padding: 5px 2px;
+  }
+
+  .nav-bar a i {
+    font-size: 0.9rem;
   }
 
   header h1 {
@@ -920,5 +950,9 @@ footer .copyright {
 
   .profile-info h1 {
     font-size: 1.5rem;
+  }
+
+  .main-content {
+    padding-bottom: 55px; /* Further adjusted padding for very small screens */
   }
 }
