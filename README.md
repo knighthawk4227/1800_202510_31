@@ -2,22 +2,21 @@
 # Project Name
 
 ## Overview
-Summarize your project's purpose, problem solved, key features, user benefits, development context, and main technologies used.
-
+Survival wallet is an app that allows people to add their friends, family, roommates allowing them to see what each other are spending their money on and get recommendations of what to buy. 
 Example:
+The client side js Web app provides infomation about your budget and will update information about budget remaining and total amount as well as recommends products to buy based off of total remaining. 
 
-This client-side JavaScript web application provides real-time weather updates for cities worldwide. It simplifies accessing weather information through an intuitive mobile-first interface, allowing users to input a city name and receive data on temperature, humidity, and conditions.
 
-Developed for the [Course Name] course, applying User-Centred Design practices, agile project management processes, integrating a weather API, and Firebase backend services.
+Developed for the [1800 projects] course, applying User-Centred Design practices, agile project management processes, and using  Firebase backend services allowing us to populate the budget information and the list of bought items.
 
 ---
 
 ## Features
 
 Example:
-- Real-time weather updates for any city.
-- Responsive design for desktop and mobile.
-- Displays temperature, humidity, and weather conditions.
+- create a group budget 
+- invite friends to budgets using generated code
+- recommend products based off of the remaining
 
 ---
 
@@ -27,16 +26,15 @@ Example:
 - **Frontend**: HTML, CSS, JavaScript
 - **Backend**: Firebase for hosting
 - **Database**: Firestore
-- **API**: OpenWeatherMap API
 
 ---
 
 ## Usage
 
 Example:
-1. Open your browser and visit `http://localhost:3000`.
-2. Enter the name of the city in the search bar and press enter.
-3. View the weather information displayed on the screen.
+1. Open your browser and visit https://survival-wallet-1800.web.app/
+2. Create an account and budget 
+3. invite friends to the budget using the group code 
 
 ---
 
@@ -44,13 +42,19 @@ Example:
 
 Example:
 ```
-project-name/
+1800-202510-31/
 ├── src/
 │   ├── index.html
+|   |── budget.html
+|   |── login.html
+|   |── main.html
+|   |── profile.html
+|   |── signup.html
+|   |── test.html
 │   ├── style.css
-│   ├── app.js
-│   └── components/
+│   └─ scripts
 ├── package.json
+│── package-lock.json
 ├── README.md
 └── .gitignore
 ```
@@ -67,33 +71,23 @@ Mitchell schaeffer - BCIT student excited to learn how to create working applica
 ---
 
 ## Acknowledgments
-
-Example:
-- Weather data sourced from [OpenWeatherMap](https://openweathermap.org/).
-- Code snippets for ___ algoirthm were adapted from resources such as [Stack Overflow](https://stackoverflow.com/) and [MDN Web Docs](https://developer.mozilla.org/).
-- Icons sourced from [FontAwesome](https://fontawesome.com/) and images from [Unsplash](https://unsplash.com/).
+- ChatGpt used for help with code and Debugging. 
 
 ---
 
 ## Limitations and Future Work
 ### Limitations
+- Currently, the app does not have real data for the prices and it does not use photos for the food.
+-limited to 5 members per group to keep it from being too big.
+-some bugs with removing items sometimes.
 
-Example:
-- Currently, the app only supports city-based weather searches.
-- Limited to basic weather parameters like temperature, humidity, and conditions.
-- The user interface can be further enhanced for accessibility.
 
 ### Future Work
-
-Example: 
-- Add support for location-based weather detection using GPS.
-- Implement additional weather parameters like wind speed and UV index.
-- Create a dark mode for better usability in low-light conditions.
-- Integrate user accounts for saving favorite locations.
-
+- Add web scraper to get accurate item information
+- implement feature to leave budget
+- Create a better mobile web design and fix
+- Allow users to put in allergies
 ---
 
 ## License
-
-Example:
 This project is licensed under the MIT License. See the LICENSE file for details.
