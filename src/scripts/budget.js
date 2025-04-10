@@ -1,4 +1,4 @@
-// budget.js - Updated with shopping list functionality
+// budget.js - Complete working version with shopping list display
 
 const firebaseConfig = {
     apiKey: "AIzaSyBX3f9ow4wXrkAX3AVi3LF13wQmqCPR6zM",
@@ -24,9 +24,8 @@ auth.onAuthStateChanged((user) => {
     if (user) {
         currentUser = user;
         checkUserBudget();
-        loadShoppingList(); // Always load shopping list on budget page
+        loadShoppingList();
     } else {
-        console.log("User not logged in. Redirecting...");
         window.location.href = 'login.html';
     }
 });
@@ -71,12 +70,15 @@ function loadBudgetData(budgetData) {
     document.getElementById("progress-bar").style.width = `${Math.min(progressPercentage, 100)}%`;
 }
 
-// Shopping List Functions
+// Shopping List Functions - Updated to match main-products.js structure
 async function loadShoppingList() {
     const listContainer = document.getElementById("shopping-list-items");
     const totalElement = document.getElementById("shopping-list-total");
     
-    if (!listContainer) return;
+    if (!listContainer) {
+        console.error("Shopping list container not found");
+        return;
+    }
 
     try {
         // Show loading state
@@ -87,12 +89,11 @@ async function loadShoppingList() {
             </div>
         `;
 
-        const shoppingListRef = db.collection("shoppingLists")
+        // Get shopping list items - matches main-products.js structure
+        const snapshot = await db.collection("shoppingLists")
             .doc(currentUser.uid)
-            .collection("items");
-            
-        const snapshot = await shoppingListRef
-            .orderBy("lastUpdated", "desc")
+            .collection("items")
+            .orderBy("addedAt", "desc")  // Changed from lastUpdated to addedAt
             .get();
 
         // Clear container
@@ -108,12 +109,14 @@ async function loadShoppingList() {
         // Process each item
         snapshot.forEach(doc => {
             const item = doc.data();
+            
+            // Validate item structure matches what main-products.js adds
             if (!item.name || typeof item.price !== 'number') {
                 console.warn("Invalid item format:", item);
                 return;
             }
 
-            const quantity = item.quantity || 1;
+            const quantity = item.quantity || 1; // Default to 1 if not specified
             const itemTotal = item.price * quantity;
             total += itemTotal;
 
@@ -125,7 +128,7 @@ async function loadShoppingList() {
                     ${quantity > 1 ? `<span class="item-quantity">×${quantity}</span>` : ''}
                     <span class="item-price">$${itemTotal.toFixed(2)}</span>
                 </div>
-                <button class="remove-item" data-id="${doc.id}">
+                <button class="remove-item" data-id="${doc.id}" data-price="${item.price}">
                     <i class="fas fa-trash"></i>
                 </button>
             `;
@@ -146,6 +149,7 @@ async function loadShoppingList() {
             <div class="error-message">
                 <i class="fas fa-exclamation-triangle"></i>
                 <p>Failed to load shopping list</p>
+                <p>${error.message}</p>
             </div>
         `;
     }
@@ -154,32 +158,23 @@ async function loadShoppingList() {
 async function removeFromShoppingList(event) {
     const button = event.currentTarget;
     const itemId = button.getAttribute('data-id');
+    const itemPrice = parseFloat(button.getAttribute('data-price'));
     
     try {
         button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
         button.disabled = true;
         
-        // Get item details before removing
-        const itemRef = db.collection("shoppingLists")
+        // Remove item - matches main-products.js structure
+        await db.collection("shoppingLists")
             .doc(currentUser.uid)
             .collection("items")
-            .doc(itemId);
-        const itemDoc = await itemRef.get();
-        
-        if (!itemDoc.exists) {
-            throw new Error("Item not found");
-        }
-        
-        const item = itemDoc.data();
-        const itemTotal = item.price * (item.quantity || 1);
-        
-        // Remove item
-        await itemRef.delete();
+            .doc(itemId)
+            .delete();
         
         // Update budget if exists
         if (userBudgetId) {
             await db.collection("groupBudget").doc(userBudgetId).update({
-                spent: FieldValue.increment(-itemTotal)
+                spent: FieldValue.increment(-itemPrice)
             });
             
             // Update UI
@@ -188,12 +183,12 @@ async function removeFromShoppingList(event) {
             
             if (remainingElement) {
                 const currentRemaining = parseFloat(remainingElement.textContent.replace('$', ''));
-                remainingElement.textContent = `$${(currentRemaining + itemTotal).toFixed(2)}`;
+                remainingElement.textContent = `$${(currentRemaining + itemPrice).toFixed(2)}`;
             }
             
             if (spentElement) {
                 const currentSpent = parseFloat(spentElement.textContent.replace('$', ''));
-                spentElement.textContent = `$${(currentSpent - itemTotal).toFixed(2)}`;
+                spentElement.textContent = `$${(currentSpent - itemPrice).toFixed(2)}`;
             }
 
             // Update progress bar
@@ -211,11 +206,6 @@ async function removeFromShoppingList(event) {
         console.error("Error removing item:", error);
         showNotification("Failed to remove item", true);
     }
-}
-
-//initialize stuff 
-function initApp() {
-    logOut();
 }
 
 // Helper Functions
@@ -240,6 +230,7 @@ function generateAccountCode() {
     }
     return result;
 }
+
 
 // Initialize Edit Budget Modal
 const editModal = document.getElementById("edit-budget-modal");
@@ -325,24 +316,22 @@ editForm.addEventListener("submit", async (e) => {
         saveBtn.innerHTML = originalBtnText;
         saveBtn.disabled = false;
     }
-
 });
+
 async function logOut(user) {
     const logoutBtn = document.getElementById('logoutButton');
-      logoutBtn.addEventListener('click', async (e) => {
-      e.preventDefault();
-      try {
-        await auth.signOut();
-        window.location.href = 'login.html';
-      } catch(error) {
-        console.log("there was an error", error);
-      }
+    logoutBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        try {
+            await auth.signOut();
+            window.location.href = 'login.html';
+        } catch(error) {
+            console.log("there was an error", error);
+        }
     });
-  }
+}
 
-  document.getElementById("join-group-btn").addEventListener("click", async () => {
-
-
+document.getElementById("join-group-btn").addEventListener("click", async () => {
     const joinModal = document.getElementById("join-budget");
     const joinClose = document.getElementById('close-btn');
     const joinForm = document.getElementById("join-budget-form");
@@ -359,7 +348,6 @@ async function logOut(user) {
         });
     }
 
-    
     joinForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         
@@ -426,4 +414,5 @@ document.getElementById('create-budget-btn').addEventListener('click', async () 
         showNotification("Failed to create budget", true);
     }
 });
-  document.addEventListener("DOMContentLoaded", initApp);
+
+document.addEventListener("DOMContentLoaded", initApp);
